@@ -1,0 +1,34 @@
+{
+  "name": "trackfinal-backend",
+  "version": "1.0.0",
+  "description": "API REST transaccional para seguimiento de producto terminado (KIT AVZ-03) - Lácteos San Antonio S.A.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "node test-api.js"
+  },
+  "keywords": [
+    "trazabilidad",
+    "industria-4.0",
+    "express",
+    "postgresql",
+    "jwt",
+    "rbac",
+    "lacteos"
+  ],
+  "author": "Joaquín Nicolás Cuello",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
