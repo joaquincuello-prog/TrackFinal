@@ -1,60 +1,108 @@
-const { Pool } = require('pg');
+const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const pool = new Pool({
+// Pool de conexiones MySQL 8+ con soporte de Promesas
+const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT, 10) || 5432,
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
+  port: parseInt(process.env.DB_PORT, 10) || 3306,
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'trackfinal_db',
-  max: 20, // Máximo de conexiones concurrentes en el pool
-  idleTimeoutMillis: 30000, // Cerrar conexiones inactivas tras 30s
-  connectionTimeoutMillis: 5000, // Tiempo límite para obtener conexión
-});
-
-// Manejo de errores imprevistos en clientes inactivos
-pool.on('error', (err) => {
-  console.error('[DATABASE POOL ERROR] Error inesperado en el cliente inactivo de PostgreSQL:', err.message);
+  waitForConnections: true,
+  connectionLimit: 20, // Máximo de conexiones simultáneas en el pool
+  queueLimit: 0,
+  decimalNumbers: true, // Mapear campos decimales a números
+  dateStrings: true,    // Retornar fechas formateadas YYYY-MM-DD
 });
 
 /**
- * Ejecuta una consulta simple utilizando el pool.
- * @param {string} text - Consulta SQL parametrizada ($1, $2, etc.)
+ * Normaliza una consulta SQL convirtiendo placeholders de estilo PostgreSQL ($1, $2)
+ * a placeholders de estilo MySQL (?).
+ * @param {string} sql 
+ * @returns {string}
+ */
+const normalizeQuery = (sql) => {
+  return sql.replace(/\$\d+/g, '?');
+};
+
+/**
+ * Ejecuta una consulta sobre el pool devolviendo un formato estandarizado { rows, insertId, affectedRows }
+ * compatible con la capa de modelos.
+ * @param {string} sql - Sentencia SQL
  * @param {Array} params - Parámetros de la consulta
- * @returns {Promise<import('pg').QueryResult>}
+ * @returns {Promise<{ rows: Array, insertId: number, affectedRows: number }>}
  */
-const query = (text, params) => {
-  return pool.query(text, params);
+const query = async (sql, params = []) => {
+  const normalizedSql = normalizeQuery(sql);
+  const [result] = await pool.query(normalizedSql, params);
+  
+  if (Array.isArray(result)) {
+    return {
+      rows: result,
+      insertId: null,
+      affectedRows: 0,
+    };
+  }
+
+  return {
+    rows: [],
+    insertId: result.insertId,
+    affectedRows: result.affectedRows,
+  };
 };
 
 /**
- * Obtiene un cliente dedicado del pool (debe liberarse manualmente con client.release()).
- * @returns {Promise<import('pg').PoolClient>}
+ * Obtiene una conexión dedicada del pool.
+ * @returns {Promise<mysql.PoolConnection>}
  */
-const getClient = () => {
-  return pool.connect();
+const getClient = async () => {
+  return await pool.getConnection();
 };
 
 /**
- * Helper transaccional ACID.
- * Ejecuta un bloque de operaciones dentro de BEGIN / COMMIT / ROLLBACK.
- * Garantiza la liberación segura del cliente en el bloque finally.
+ * Helper transaccional ACID para MySQL.
+ * Ejecuta un bloque de operaciones dentro de START TRANSACTION / COMMIT / ROLLBACK.
+ * Garantiza la liberación segura de la conexión en el bloque finally.
  * 
  * @param {Function} callback - Función asíncrona que recibe `client` y ejecuta queries
- * @returns {Promise<any>} - Retorno de la función callback
+ * @returns {Promise<any>}
  */
 const withTransaction = async (callback) => {
-  const client = await pool.connect();
+  const connection = await pool.getConnection();
   try {
-    await client.query('BEGIN');
-    const result = await callback(client);
-    await client.query('COMMIT');
+    await connection.beginTransaction();
+
+    // Envoltura de cliente transaccional compatible con el formato { rows, insertId }
+    const clientWrapper = {
+      query: async (sql, params = []) => {
+        const normalizedSql = normalizeQuery(sql);
+        const [result] = await connection.query(normalizedSql, params);
+
+        if (Array.isArray(result)) {
+          return {
+            rows: result,
+            insertId: null,
+            affectedRows: 0,
+          };
+        }
+
+        return {
+          rows: [],
+          insertId: result.insertId,
+          affectedRows: result.affectedRows,
+        };
+      },
+      rawConnection: connection,
+    };
+
+    const result = await callback(clientWrapper);
+    await connection.commit();
     return result;
   } catch (error) {
-    await client.query('ROLLBACK');
+    await connection.rollback();
     throw error;
   } finally {
-    client.release();
+    connection.release();
   }
 };
 

@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 /**
- * Repositorio de Materias Primas y Lotes de Insumos
+ * Repositorio de Materias Primas y Lotes de Insumos - MySQL
  */
 class MateriaPrimaModel {
   /**
@@ -46,8 +46,6 @@ class MateriaPrimaModel {
 
   /**
    * Busca un lote de materia prima por su ID, bloqueando la fila si se pasa un cliente transaccional (SELECT ... FOR UPDATE).
-   * @param {number} id - ID del lote MP
-   * @param {import('pg').PoolClient} [client] - Cliente de base de datos transaccional opcional
    */
   static async findLoteById(id, client = null) {
     const text = `
@@ -65,7 +63,7 @@ class MateriaPrimaModel {
         mp.unidad_medida
       FROM lotes_materia_prima lmp
       JOIN materias_primas mp ON lmp.materia_prima_id = mp.id
-      WHERE lmp.id = $1
+      WHERE lmp.id = ?
       ${client ? 'FOR UPDATE' : ''};
     `;
     const executor = client || db;
@@ -75,21 +73,17 @@ class MateriaPrimaModel {
 
   /**
    * Actualiza el stock remanente y estado de un lote de materia prima dentro de una transacción.
-   * @param {number} id
-   * @param {number} nuevaCantidad
-   * @param {string} nuevoEstado
-   * @param {import('pg').PoolClient} client
    */
   static async updateStock(id, nuevaCantidad, nuevoEstado, client) {
     const text = `
       UPDATE lotes_materia_prima
       SET 
-        cantidad_actual = $1,
-        estado = $2
-      WHERE id = $3
-      RETURNING *;
+        cantidad_actual = ?,
+        estado = ?
+      WHERE id = ?;
     `;
-    const { rows } = await client.query(text, [nuevaCantidad, nuevoEstado, id]);
+    await client.query(text, [nuevaCantidad, nuevoEstado, id]);
+    const { rows } = await client.query('SELECT * FROM lotes_materia_prima WHERE id = ? LIMIT 1;', [id]);
     return rows[0];
   }
 }

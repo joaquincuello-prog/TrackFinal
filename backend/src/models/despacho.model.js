@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 /**
- * Repositorio de Clientes y Despachos (Expedición y Remitos)
+ * Repositorio de Clientes y Despachos (Expedición y Remitos) - MySQL
  */
 class DespachoModel {
   /**
@@ -19,29 +19,24 @@ class DespachoModel {
 
   /**
    * Registra un despacho de producto terminado vinculado a un cliente y remito.
-   * @param {Object} data
-   * @param {number} data.lote_pt_id
-   * @param {number} data.cliente_id
-   * @param {string} data.numero_remito
-   * @param {number} data.cantidad_despachada
-   * @param {number} data.usuario_id
-   * @param {import('pg').PoolClient} client
    */
   static async create({ lote_pt_id, cliente_id, numero_remito, cantidad_despachada, usuario_id }, client) {
     const text = `
       INSERT INTO despachos
         (lote_pt_id, cliente_id, numero_remito, cantidad_despachada, usuario_id)
       VALUES
-        ($1, $2, $3, $4, $5)
-      RETURNING *;
+        (?, ?, ?, ?, ?);
     `;
-    const { rows } = await client.query(text, [
+    const res = await client.query(text, [
       lote_pt_id,
       cliente_id,
       numero_remito,
       cantidad_despachada,
       usuario_id,
     ]);
+
+    const newId = res.insertId;
+    const { rows } = await client.query('SELECT * FROM despachos WHERE id = ? LIMIT 1;', [newId]);
     return rows[0];
   }
 
@@ -60,7 +55,7 @@ class DespachoModel {
         pt.unidad_medida,
         c.razon_social AS cliente_nombre,
         c.cuit AS cliente_cuit,
-        u.nombre || ' ' || u.apellido AS despachador_nombre
+        CONCAT(u.nombre, ' ', u.apellido) AS despachador_nombre
       FROM despachos d
       JOIN lotes_producto_terminado lpt ON d.lote_pt_id = lpt.id
       JOIN ordenes_produccion op ON lpt.orden_produccion_id = op.id

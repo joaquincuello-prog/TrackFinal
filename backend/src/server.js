@@ -5,20 +5,21 @@ const db = require('./config/db');
 const PORT = process.env.PORT || 3000;
 
 /**
- * Inicialización y verificación de servicios
+ * Inicialización y verificación de servicios con MySQL
  */
 const startServer = async () => {
   try {
-    // 1. Probar conectividad con PostgreSQL
-    console.log('[DATABASE] Verificando conexión con el servidor PostgreSQL...');
-    const res = await db.query('SELECT NOW() AS now, current_database() AS db_name, version() AS version;');
-    console.log(`[DATABASE OK] Conectado exitosamente a la base '${res.rows[0].db_name}' (${res.rows[0].now})`);
+    // 1. Probar conectividad con MySQL
+    console.log('[DATABASE] Verificando conexión con el servidor MySQL...');
+    const res = await db.query('SELECT NOW() AS now, DATABASE() AS db_name, VERSION() AS version;');
+    const info = res.rows[0] || {};
+    console.log(`[DATABASE OK] Conectado exitosamente a la base MySQL '${info.db_name || 'trackfinal_db'}' (${info.now}) - Versión: ${info.version}`);
 
     // 2. Levantar servidor HTTP
     const server = app.listen(PORT, () => {
       console.log('=============================================================');
-      console.log(`  TRACKFINAL API REST — KIT AVZ-03`);
-      console.log(`  Lácteos San Antonio S.A. | Planta Cañuelas`);
+      console.log(`  TRACKFINAL API REST — KIT AVZ-03 (MySQL Edition)`);
+      console.log(`  Lácteos San Antonio S.A. | Planta Villa María`);
       console.log(`  Servidor escuchando en: http://localhost:${PORT}`);
       console.log(`  Healthcheck: http://localhost:${PORT}/api/v1/health`);
       console.log(`  Entorno: ${process.env.NODE_ENV || 'development'}`);
@@ -31,7 +32,7 @@ const startServer = async () => {
       server.close(async () => {
         try {
           await db.pool.end();
-          console.log('[SHUTDOWN OK] Pool de PostgreSQL cerrado limpiamente.');
+          console.log('[SHUTDOWN OK] Pool de MySQL cerrado limpiamente.');
           process.exit(0);
         } catch (err) {
           console.error('[SHUTDOWN ERROR] Error al cerrar pool:', err);
@@ -45,7 +46,7 @@ const startServer = async () => {
 
   } catch (error) {
     console.error('[FATAL SERVER ERROR] Error al iniciar el servidor backend:', error.message);
-    console.error('Verifique que el servicio PostgreSQL esté activo y las credenciales en .env sean correctas.');
+    console.error('Verifique que el servicio MySQL esté activo y las credenciales en .env sean correctas.');
     process.exit(1);
   }
 };
