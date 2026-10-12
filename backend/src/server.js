@@ -9,11 +9,11 @@ const PORT = process.env.PORT || 3000;
  */
 const startServer = async () => {
   try {
-    // 1. Probar conectividad con MySQL
-    console.log('[DATABASE] Verificando conexión con el servidor MySQL...');
+    // 1. Probar conectividad con MySQL (o réplica en memoria)
+    console.log('[DATABASE] Verificando conexión con el servidor de datos...');
     const res = await db.query('SELECT NOW() AS now, DATABASE() AS db_name, VERSION() AS version;');
     const info = res.rows[0] || {};
-    console.log(`[DATABASE OK] Conectado exitosamente a la base MySQL '${info.db_name || 'trackfinal_db'}' (${info.now}) - Versión: ${info.version}`);
+    console.log(`[DATABASE OK] Conectado exitosamente a '${info.db_name || 'trackfinal_db'}' (${info.now}) - Versión: ${info.version}`);
 
     // 2. Levantar servidor HTTP
     const HOST = process.env.HOST || '0.0.0.0';
@@ -52,4 +52,9 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// En entorno local levantar el puerto HTTP; en Vercel exportar la instancia Express
+if (!process.env.VERCEL && require.main === module) {
+  startServer();
+}
+
+module.exports = app;

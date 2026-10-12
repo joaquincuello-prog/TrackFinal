@@ -1,0 +1,1784 @@
+{
+  "roles": [
+    {
+      "id": 1,
+      "nombre": "ADMIN",
+      "descripcion": "Administrador General: gestión de datos maestros, usuarios y configuración",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "nombre": "SUPERVISOR",
+      "descripcion": "Supervisor de Planta y Encargado de Despacho y Expedición",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "nombre": "OPERARIO",
+      "descripcion": "Operario de Producción: envasado, ingreso a cámara y escaneo de lotes",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 4,
+      "nombre": "AUDITOR",
+      "descripcion": "Auditor de Calidad y Bromatología: trazabilidad, recall e inspecciones",
+      "created_at": "2026-09-23 22:55:47"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Juan Ignacio",
+      "apellido": "Pérez",
+      "legajo": "ADM-001",
+      "email": "admin@lacteossanantonio.com",
+      "password_hash": "$2a$10$2bR.pG1ZeaZZakEZtDKsIu24rQxUOVQhOvnohxO0l2vt6adRiw.OC",
+      "rol_id": 1,
+      "activo": 1,
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "nombre": "Mariana",
+      "apellido": "López",
+      "legajo": "DES-005",
+      "email": "despacho@lacteossanantonio.com",
+      "password_hash": "$2a$10$8Qrm6xAYFzzmGeXeLZAFV.FjLJnDTI.ciyeP3r9knhZ4wNMRKASCq",
+      "rol_id": 2,
+      "activo": 1,
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "nombre": "Carlos",
+      "apellido": "Gómez",
+      "legajo": "OPE-014",
+      "email": "operario@lacteossanantonio.com",
+      "password_hash": "$2a$10$X/z1AeZ.gKhhHhgksFl5tO9DkJHnz2OqOvQgrWT8d4M5gzdE3No7C",
+      "rol_id": 3,
+      "activo": 1,
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 4,
+      "nombre": "Esteban",
+      "apellido": "Suárez",
+      "legajo": "CAL-002",
+      "email": "calidad@lacteossanantonio.com",
+      "password_hash": "$2a$10$DxvzbMrzFcmRI/2UkYUVP.ryM6VU.vaa9vGcT7WB2lbKyVnGINlW2",
+      "rol_id": 4,
+      "activo": 1,
+      "created_at": "2026-09-23 22:55:47"
+    }
+  ],
+  "productos_terminados": [
+    {
+      "id": 1,
+      "codigo_sku": "PT-QCR-01",
+      "nombre": "Queso Cremoso Tradicional San Antonio",
+      "descripcion": "Queso de pasta blanda, elaborado con leche pasteurizada (Horma ~4kg)",
+      "unidad_medida": "Horma",
+      "dias_vida_util": 60,
+      "temperatura_conservacion": "2°C a 6°C",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "codigo_sku": "PT-QTY-02",
+      "nombre": "Queso Barra Tybo Feteable",
+      "descripcion": "Queso semiduro de corte para feteado industrial (Barra ~3.5kg)",
+      "unidad_medida": "Barra",
+      "dias_vida_util": 90,
+      "temperatura_conservacion": "2°C a 6°C",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "codigo_sku": "PT-YOG-FRUT",
+      "nombre": "Yogur Bebible Frutilla 1L",
+      "descripcion": "Yogur bebible parcialmente descremado con pulpa natural",
+      "unidad_medida": "Botella 1L",
+      "dias_vida_util": 35,
+      "temperatura_conservacion": "4°C a 8°C",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 4,
+      "codigo_sku": "PT-DDL-CL",
+      "nombre": "Dulce de Leche Clásico Familiar 400g",
+      "descripcion": "Dulce de leche tradicional elaborado en paila con receta criolla",
+      "unidad_medida": "Pote 400g",
+      "dias_vida_util": 180,
+      "temperatura_conservacion": "Ambiente (máx 20°C)",
+      "created_at": "2026-09-23 22:55:47"
+    }
+  ],
+  "materias_primas": [
+    {
+      "id": 1,
+      "codigo_sku": "MP-LECHE-01",
+      "nombre": "Leche Cruda Entera de Tambo",
+      "descripcion": "Leche fluida sin procesar mantenida a 4°C en tanques cisterna",
+      "unidad_medida": "Litros",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "codigo_sku": "MP-FERM-01",
+      "nombre": "Fermento Láctico Termófilo LYO",
+      "descripcion": "Cultivo liofilizado DVS para yogur y queso semiduro",
+      "unidad_medida": "Gramos",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "codigo_sku": "MP-CUAJ-01",
+      "nombre": "Cuajo Líquido Bovino 1:10000",
+      "descripcion": "Enzima coagulante natural de origen bovino",
+      "unidad_medida": "Mililitros",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 4,
+      "codigo_sku": "MP-CALC-01",
+      "nombre": "Cloruro de Calcio Alimentario",
+      "descripcion": "Coadyuvante de coagulación en polvo grado alimenticio",
+      "unidad_medida": "Gramos",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 5,
+      "codigo_sku": "MP-FRUT-01",
+      "nombre": "Pulpa Concentrada de Frutilla",
+      "descripcion": "Fruta natural procesada pasteurizada para yogures",
+      "unidad_medida": "Kg",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 6,
+      "codigo_sku": "MP-AZUC-01",
+      "nombre": "Azúcar Común Tipo A",
+      "descripcion": "Sacarosa pura refinada para endulzado de bases lácteas",
+      "unidad_medida": "Kg",
+      "created_at": "2026-09-23 22:55:47"
+    }
+  ],
+  "lotes_materia_prima": [
+    {
+      "id": 1,
+      "materia_prima_id": 1,
+      "codigo_lote_mp": "LMP-20260901-01",
+      "proveedor": "Tambo Las Acacias (Ruta 205 Km 88)",
+      "fecha_recepcion": "2026-09-01",
+      "fecha_vencimiento": "2026-09-04",
+      "cantidad_inicial": 12000,
+      "cantidad_actual": 4050,
+      "estado": "CUARENTENA",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "materia_prima_id": 1,
+      "codigo_lote_mp": "LMP-20260902-02",
+      "proveedor": "Cabaña San Isidro (Navarro)",
+      "fecha_recepcion": "2026-09-02",
+      "fecha_vencimiento": "2026-09-05",
+      "cantidad_inicial": 8500,
+      "cantidad_actual": 8500,
+      "estado": "DISPONIBLE",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "materia_prima_id": 2,
+      "codigo_lote_mp": "LMP-20260815-F1",
+      "proveedor": "Chr. Hansen Argentina S.A.",
+      "fecha_recepcion": "2026-08-15",
+      "fecha_vencimiento": "2027-02-15",
+      "cantidad_inicial": 5000,
+      "cantidad_actual": 3850,
+      "estado": "DISPONIBLE",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 4,
+      "materia_prima_id": 3,
+      "codigo_lote_mp": "LMP-20260820-C1",
+      "proveedor": "Laboratorios Biocel S.R.L.",
+      "fecha_recepcion": "2026-08-20",
+      "fecha_vencimiento": "2027-08-20",
+      "cantidad_inicial": 20000,
+      "cantidad_actual": 16000,
+      "estado": "DISPONIBLE",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 5,
+      "materia_prima_id": 4,
+      "codigo_lote_mp": "LMP-20260710-CL",
+      "proveedor": "Química del Centro S.A.",
+      "fecha_recepcion": "2026-07-10",
+      "fecha_vencimiento": "2028-07-10",
+      "cantidad_inicial": 500,
+      "cantidad_actual": 420,
+      "estado": "DISPONIBLE",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 6,
+      "materia_prima_id": 5,
+      "codigo_lote_mp": "LMP-20260825-FR",
+      "proveedor": "Frutas del Litoral S.A.",
+      "fecha_recepcion": "2026-08-25",
+      "fecha_vencimiento": "2026-11-25",
+      "cantidad_inicial": 1500,
+      "cantidad_actual": 950,
+      "estado": "DISPONIBLE",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 7,
+      "materia_prima_id": 6,
+      "codigo_lote_mp": "LMP-20260801-AZ",
+      "proveedor": "Ingenio Ledesma S.A.A.I.",
+      "fecha_recepcion": "2026-08-01",
+      "fecha_vencimiento": "2028-08-01",
+      "cantidad_inicial": 3000,
+      "cantidad_actual": 2100,
+      "estado": "DISPONIBLE",
+      "created_at": "2026-09-23 22:55:47"
+    }
+  ],
+  "ordenes_produccion": [
+    {
+      "id": 1,
+      "numero_op": "OP-2026-001",
+      "producto_terminado_id": 1,
+      "cantidad_planificada": 200,
+      "fecha_inicio": "2026-09-02 06:00:00",
+      "fecha_fin": "2026-09-02 14:30:00",
+      "linea_produccion": "Línea Quesería 1 (Tinas 1 y 2)",
+      "estado": "FINALIZADA",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "numero_op": "OP-2026-002",
+      "producto_terminado_id": 3,
+      "cantidad_planificada": 1000,
+      "fecha_inicio": "2026-09-03 07:00:00",
+      "fecha_fin": null,
+      "linea_produccion": "Línea Envasado Yogur 2",
+      "estado": "EN_PROCESO",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "numero_op": "OP-2026-003",
+      "producto_terminado_id": 2,
+      "cantidad_planificada": 150,
+      "fecha_inicio": "2026-09-04 06:30:00",
+      "fecha_fin": null,
+      "linea_produccion": "Línea Quesería 2 (Tina 3)",
+      "estado": "EN_PROCESO",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 4,
+      "numero_op": "OP-2026-004",
+      "producto_terminado_id": 4,
+      "cantidad_planificada": 800,
+      "fecha_inicio": "2026-09-05 07:00:00",
+      "fecha_fin": null,
+      "linea_produccion": "Línea de Paila Dulcera 1",
+      "estado": "EN_PROCESO",
+      "created_at": "2026-10-09 13:53:02"
+    }
+  ],
+  "puntos_captura": [
+    {
+      "id": 1,
+      "codigo_punto": "PC-REC",
+      "nombre": "Recepción de Materia Prima y Tambo",
+      "descripcion": "Recepción de cisternas, control bromatológico de ingreso, acidez y temperatura"
+    },
+    {
+      "id": 2,
+      "codigo_punto": "PC-ELAB",
+      "nombre": "Sector de Elaboración y Tinas",
+      "descripcion": "Pasteurización, coagulación, corte de cuajada, agregado de fermentos y cocción"
+    },
+    {
+      "id": 3,
+      "codigo_punto": "PC-ENV",
+      "nombre": "Línea de Envasado, Pesaje y Marcado QR",
+      "descripcion": "Fraccionamiento primario, vacío, termocontracción y aplicación de rótulo QR"
+    },
+    {
+      "id": 4,
+      "codigo_punto": "PC-CAL",
+      "nombre": "Laboratorio de Control de Calidad",
+      "descripcion": "Liberación fisicoquímica y microbiológica (pH, extracto seco, acidez Dornic)"
+    },
+    {
+      "id": 5,
+      "codigo_punto": "PC-CAM",
+      "nombre": "Cámaras de Maduración y Conservación Frigorífica",
+      "descripcion": "Estacionamiento térmico controlado (2°C a 6°C)"
+    },
+    {
+      "id": 6,
+      "codigo_punto": "PC-DES",
+      "nombre": "Muelle de Expedición y Despacho",
+      "descripcion": "Lectura de QR antes de carga en furgones refrigerados y emisión de remitos"
+    }
+  ],
+  "lotes_producto_terminado": [
+    {
+      "id": 1,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-20260902-001",
+      "cantidad_elaborada": 195,
+      "fecha_elaboracion": "2026-09-02",
+      "fecha_vencimiento": "2026-11-01",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-20260902-001",
+        "linea": "Línea Quesería 1",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-02",
+        "vencimiento": "2026-11-01",
+        "conservacion": "2°C a 6°C",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-20260902-001"
+      },
+      "ubicacion_deposito": "Cámara 1 - Rack B3",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 2,
+      "orden_produccion_id": 2,
+      "codigo_lote_pt": "LPT-20260903-002",
+      "cantidad_elaborada": 980,
+      "fecha_elaboracion": "2026-09-03",
+      "fecha_vencimiento": "2026-10-08",
+      "estado": "RECHAZADO",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-YOG-FRUT",
+        "lote": "LPT-20260903-002",
+        "linea": "Línea Envasado Yogur 2",
+        "unidad": "Botella 1L",
+        "version": "1.0",
+        "producto": "Yogur Bebible Frutilla 1L",
+        "elaboracion": "2026-09-03",
+        "vencimiento": "2026-10-08",
+        "conservacion": "4°C a 8°C",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-20260903-002"
+      },
+      "ubicacion_deposito": "Cámara 2 - Transitorio",
+      "created_at": "2026-09-23 22:55:47"
+    },
+    {
+      "id": 3,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-2026-661",
+      "cantidad_elaborada": 1000,
+      "fecha_elaboracion": "2026-09-24",
+      "fecha_vencimiento": "2026-11-23",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-2026-661",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-24",
+        "vencimiento": "2026-11-23",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-661"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-03)",
+      "created_at": "2026-09-23 23:15:26"
+    },
+    {
+      "id": 4,
+      "orden_produccion_id": 2,
+      "codigo_lote_pt": "LPT-2026-294",
+      "cantidad_elaborada": 1000,
+      "fecha_elaboracion": "2026-09-23",
+      "fecha_vencimiento": "2026-11-22",
+      "estado": "DESPACHADO",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-YOG-FRUT",
+        "lote": "LPT-2026-294",
+        "linea": "Línea Envasado Yogur 2",
+        "unidad": "Botella 1L",
+        "version": "1.0",
+        "producto": "Yogur Bebible Frutilla 1L",
+        "elaboracion": "2026-09-23",
+        "vencimiento": "2026-11-22",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-294"
+      },
+      "ubicacion_deposito": "Entregado: Supermercados La Anónima S.A. (Av. San Martín 450, Río Cuarto, Córdoba)",
+      "created_at": "2026-09-23 23:18:27"
+    },
+    {
+      "id": 5,
+      "orden_produccion_id": 3,
+      "codigo_lote_pt": "LPT-2026-537",
+      "cantidad_elaborada": 500,
+      "fecha_elaboracion": "2026-09-23",
+      "fecha_vencimiento": "2026-11-22",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QTY-02",
+        "lote": "LPT-2026-537",
+        "linea": "Línea Quesería 2 (Tina 3)",
+        "unidad": "Barra",
+        "version": "1.0",
+        "producto": "Queso Barra Tybo Feteable",
+        "elaboracion": "2026-09-23",
+        "vencimiento": "2026-11-22",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-537"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-03)",
+      "created_at": "2026-09-23 23:19:13"
+    },
+    {
+      "id": 6,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-2026-307",
+      "cantidad_elaborada": 1500,
+      "fecha_elaboracion": "2026-09-23",
+      "fecha_vencimiento": "2026-11-22",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-2026-307",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-23",
+        "vencimiento": "2026-11-22",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-307"
+      },
+      "ubicacion_deposito": "Entregado: Supermercados del Centro S.A. (Av. Alem 1450, Córdoba Capital)",
+      "created_at": "2026-09-23 23:21:02"
+    },
+    {
+      "id": 7,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-TEST-976075",
+      "cantidad_elaborada": 250,
+      "fecha_elaboracion": "2026-09-15",
+      "fecha_vencimiento": "2026-11-14",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-TEST-976075",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-15",
+        "vencimiento": "2026-11-14",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-TEST-976075"
+      },
+      "ubicacion_deposito": "Cámara 1 - Rack C2",
+      "created_at": "2026-09-23 23:46:16"
+    },
+    {
+      "id": 8,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-TEST-267672",
+      "cantidad_elaborada": 250,
+      "fecha_elaboracion": "2026-09-15",
+      "fecha_vencimiento": "2026-11-14",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-TEST-267672",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-15",
+        "vencimiento": "2026-11-14",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-TEST-267672"
+      },
+      "ubicacion_deposito": "Cámara 1 - Rack C2",
+      "created_at": "2026-09-23 23:51:07"
+    },
+    {
+      "id": 9,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-TEST-425941",
+      "cantidad_elaborada": 250,
+      "fecha_elaboracion": "2026-09-15",
+      "fecha_vencimiento": "2026-11-14",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-TEST-425941",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-15",
+        "vencimiento": "2026-11-14",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-TEST-425941"
+      },
+      "ubicacion_deposito": "Entregado: Coto C.I.C.S.A. - CD Rosario (Circunvalación y Ayacucho, Rosario, Santa Fe)",
+      "created_at": "2026-09-23 23:53:45"
+    },
+    {
+      "id": 10,
+      "orden_produccion_id": 2,
+      "codigo_lote_pt": "LPT-2026-495",
+      "cantidad_elaborada": 2000,
+      "fecha_elaboracion": "2026-09-29",
+      "fecha_vencimiento": "2026-11-28",
+      "estado": "EN_PROCESO",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-YOG-FRUT",
+        "lote": "LPT-2026-495",
+        "linea": "Línea Envasado Yogur 2",
+        "unidad": "Botella 1L",
+        "version": "1.0",
+        "producto": "Yogur Bebible Frutilla 1L",
+        "elaboracion": "2026-09-29",
+        "vencimiento": "2026-11-28",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-495"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-03)",
+      "created_at": "2026-09-29 18:58:27"
+    },
+    {
+      "id": 11,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-2026-601",
+      "cantidad_elaborada": 1800,
+      "fecha_elaboracion": "2026-09-29",
+      "fecha_vencimiento": "2026-11-28",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-2026-601",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-29",
+        "vencimiento": "2026-11-28",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-601"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-03)",
+      "created_at": "2026-09-29 18:59:14"
+    },
+    {
+      "id": 12,
+      "orden_produccion_id": 2,
+      "codigo_lote_pt": "LPT-2026-804",
+      "cantidad_elaborada": 1000,
+      "fecha_elaboracion": "2026-09-29",
+      "fecha_vencimiento": "2026-11-28",
+      "estado": "EN_PROCESO",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-YOG-FRUT",
+        "lote": "LPT-2026-804",
+        "linea": "Línea Envasado Yogur 2",
+        "unidad": "Botella 1L",
+        "version": "1.0",
+        "producto": "Yogur Bebible Frutilla 1L",
+        "elaboracion": "2026-09-29",
+        "vencimiento": "2026-11-28",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-804"
+      },
+      "ubicacion_deposito": "Recepcion mp",
+      "created_at": "2026-09-29 19:04:23"
+    },
+    {
+      "id": 13,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-2026-581",
+      "cantidad_elaborada": 1000,
+      "fecha_elaboracion": "2026-09-29",
+      "fecha_vencimiento": "2026-11-28",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-2026-581",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-29",
+        "vencimiento": "2026-11-28",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-581"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-04)",
+      "created_at": "2026-09-29 19:36:06"
+    },
+    {
+      "id": 14,
+      "orden_produccion_id": 2,
+      "codigo_lote_pt": "LPT-2026-960",
+      "cantidad_elaborada": 100,
+      "fecha_elaboracion": "2026-09-28",
+      "fecha_vencimiento": "2026-11-27",
+      "estado": "DESPACHADO",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-YOG-FRUT",
+        "lote": "LPT-2026-960",
+        "linea": "Línea Envasado Yogur 2",
+        "unidad": "Botella 1L",
+        "version": "1.0",
+        "producto": "Yogur Bebible Frutilla 1L",
+        "elaboracion": "2026-09-28",
+        "vencimiento": "2026-11-27",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-960"
+      },
+      "ubicacion_deposito": "Entregado: Cadena Regional HiperMayorista (Ruta 9 Km 554, Bell Ville, Cba)",
+      "created_at": "2026-09-29 20:23:09"
+    },
+    {
+      "id": 15,
+      "orden_produccion_id": 3,
+      "codigo_lote_pt": "LPT-2026-297",
+      "cantidad_elaborada": 2000,
+      "fecha_elaboracion": "2026-09-29",
+      "fecha_vencimiento": "2026-11-28",
+      "estado": "EN_PROCESO",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QTY-02",
+        "lote": "LPT-2026-297",
+        "linea": "Línea Quesería 2 (Tina 3)",
+        "unidad": "Barra",
+        "version": "1.0",
+        "producto": "Queso Barra Tybo Feteable",
+        "elaboracion": "2026-09-29",
+        "vencimiento": "2026-11-28",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-297"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-03)",
+      "created_at": "2026-09-29 20:41:22"
+    },
+    {
+      "id": 17,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-2026-005",
+      "cantidad_elaborada": 2000,
+      "fecha_elaboracion": "2026-09-29",
+      "fecha_vencimiento": "2026-11-28",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-2026-005",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-09-29",
+        "vencimiento": "2026-11-28",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-005"
+      },
+      "ubicacion_deposito": "Entregado: Hiper Libertad - Sucursal Villa María (Ruta 158 y Scalabrini Ortiz, Villa María, Cba)",
+      "created_at": "2026-09-29 20:42:31"
+    },
+    {
+      "id": 18,
+      "orden_produccion_id": 1,
+      "codigo_lote_pt": "LPT-2026-110",
+      "cantidad_elaborada": 1000,
+      "fecha_elaboracion": "2026-10-09",
+      "fecha_vencimiento": "2026-12-08",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-QCR-01",
+        "lote": "LPT-2026-110",
+        "linea": "Línea Quesería 1 (Tinas 1 y 2)",
+        "unidad": "Horma",
+        "version": "1.0",
+        "producto": "Queso Cremoso Tradicional San Antonio",
+        "elaboracion": "2026-10-09",
+        "vencimiento": "2026-12-08",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-110"
+      },
+      "ubicacion_deposito": "Cámara de Frío 1 (Estantería A-03)",
+      "created_at": "2026-10-09 13:20:30"
+    },
+    {
+      "id": 19,
+      "orden_produccion_id": 4,
+      "codigo_lote_pt": "LPT-20260905-DDL1",
+      "cantidad_elaborada": 750,
+      "fecha_elaboracion": "2026-09-05",
+      "fecha_vencimiento": "2027-03-05",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-DDL-CL",
+        "lote": "LPT-20260905-DDL1",
+        "linea": "Línea de Paila Dulcera 1",
+        "unidad": "Pote 400g",
+        "version": "1.0",
+        "producto": "Dulce de Leche Clásico Familiar 400g",
+        "elaboracion": "2026-09-05",
+        "vencimiento": "2027-03-05",
+        "conservacion": "Ambiente (máx 20°C)",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-20260905-DDL1"
+      },
+      "ubicacion_deposito": "Depósito Seco Central - Rack D1",
+      "created_at": "2026-10-09 13:53:02"
+    },
+    {
+      "id": 20,
+      "orden_produccion_id": 4,
+      "codigo_lote_pt": "LPT-2026-518",
+      "cantidad_elaborada": 800,
+      "fecha_elaboracion": "2026-10-12",
+      "fecha_vencimiento": "2026-12-11",
+      "estado": "CUARENTENA",
+      "codigo_qr_payload": {
+        "app": "TrackFinal",
+        "sku": "PT-DDL-CL",
+        "lote": "LPT-2026-518",
+        "linea": "Línea de Paila Dulcera 1",
+        "unidad": "Pote 400g",
+        "version": "1.0",
+        "producto": "Dulce de Leche Clásico Familiar 400g",
+        "elaboracion": "2026-10-12",
+        "vencimiento": "2026-12-11",
+        "verificacion_url": "http://trackfinal.lacteossanantonio.com/trazabilidad/LPT-2026-518"
+      },
+      "ubicacion_deposito": "Entregado: Supermercados del Centro S.A. (Av. Alem 1450, Córdoba Capital)",
+      "created_at": "2026-10-11 21:10:16"
+    }
+  ],
+  "consumos_materia_prima": [
+    {
+      "id": 1,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 1,
+      "cantidad_consumida": 7500,
+      "timestamp_consumo": "2026-09-02 06:30:00",
+      "operario_id": 3
+    },
+    {
+      "id": 2,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 3,
+      "cantidad_consumida": 350,
+      "timestamp_consumo": "2026-09-02 07:00:00",
+      "operario_id": 3
+    },
+    {
+      "id": 3,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 4,
+      "cantidad_consumida": 1500,
+      "timestamp_consumo": "2026-09-02 07:15:00",
+      "operario_id": 3
+    },
+    {
+      "id": 4,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 5,
+      "cantidad_consumida": 80,
+      "timestamp_consumo": "2026-09-02 07:15:00",
+      "operario_id": 3
+    },
+    {
+      "id": 5,
+      "orden_produccion_id": 2,
+      "lote_mp_id": 2,
+      "cantidad_consumida": 900,
+      "timestamp_consumo": "2026-09-03 07:30:00",
+      "operario_id": 3
+    },
+    {
+      "id": 6,
+      "orden_produccion_id": 2,
+      "lote_mp_id": 6,
+      "cantidad_consumida": 250,
+      "timestamp_consumo": "2026-09-03 08:00:00",
+      "operario_id": 3
+    },
+    {
+      "id": 7,
+      "orden_produccion_id": 2,
+      "lote_mp_id": 7,
+      "cantidad_consumida": 450,
+      "timestamp_consumo": "2026-09-03 08:15:00",
+      "operario_id": 3
+    },
+    {
+      "id": 8,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 1,
+      "cantidad_consumida": 150,
+      "timestamp_consumo": "2026-09-23 23:46:16",
+      "operario_id": 3
+    },
+    {
+      "id": 9,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 1,
+      "cantidad_consumida": 150,
+      "timestamp_consumo": "2026-09-23 23:51:07",
+      "operario_id": 3
+    },
+    {
+      "id": 10,
+      "orden_produccion_id": 1,
+      "lote_mp_id": 1,
+      "cantidad_consumida": 150,
+      "timestamp_consumo": "2026-09-23 23:53:45",
+      "operario_id": 3
+    },
+    {
+      "id": 11,
+      "orden_produccion_id": 4,
+      "lote_mp_id": 1,
+      "cantidad_consumida": 2400,
+      "timestamp_consumo": "2026-09-05 07:30:00",
+      "operario_id": 3
+    },
+    {
+      "id": 12,
+      "orden_produccion_id": 4,
+      "lote_mp_id": 7,
+      "cantidad_consumida": 500,
+      "timestamp_consumo": "2026-09-05 08:00:00",
+      "operario_id": 3
+    },
+    {
+      "id": 13,
+      "orden_produccion_id": 3,
+      "lote_mp_id": 2,
+      "cantidad_consumida": 1500,
+      "timestamp_consumo": "2026-09-04 07:00:00",
+      "operario_id": 3
+    },
+    {
+      "id": 14,
+      "orden_produccion_id": 3,
+      "lote_mp_id": 3,
+      "cantidad_consumida": 250,
+      "timestamp_consumo": "2026-09-04 07:15:00",
+      "operario_id": 3
+    },
+    {
+      "id": 15,
+      "orden_produccion_id": 3,
+      "lote_mp_id": 4,
+      "cantidad_consumida": 300,
+      "timestamp_consumo": "2026-09-04 07:30:00",
+      "operario_id": 3
+    },
+    {
+      "id": 16,
+      "orden_produccion_id": 3,
+      "lote_mp_id": 5,
+      "cantidad_consumida": 50,
+      "timestamp_consumo": "2026-09-04 07:30:00",
+      "operario_id": 3
+    }
+  ],
+  "eventos_trazabilidad": [
+    {
+      "id": 1,
+      "lote_pt_id": 1,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Termocontracción",
+      "linea_equipo": "Línea Quesería 1 - Embolsadora Cryovac",
+      "timestamp_evento": "2026-09-02 14:00:00",
+      "observaciones": "195 hormas envasadas al vacío y rotuladas con código QR."
+    },
+    {
+      "id": 2,
+      "lote_pt_id": 1,
+      "punto_captura_id": 5,
+      "usuario_id": 3,
+      "etapa_nombre": "Ingreso a Cámara 1",
+      "linea_equipo": "Autoelevador Eléctrico 02",
+      "timestamp_evento": "2026-09-02 15:30:00",
+      "observaciones": "Paletizado e ingreso a cámara de oreo a 4.2°C."
+    },
+    {
+      "id": 3,
+      "lote_pt_id": 1,
+      "punto_captura_id": 4,
+      "usuario_id": 4,
+      "etapa_nombre": "Aprobación Bromatológica",
+      "linea_equipo": "Laboratorio Central de Calidad",
+      "timestamp_evento": "2026-09-03 10:00:00",
+      "observaciones": "pH 5.22, Acidez Dornic 18°D. Aprobado para consumo."
+    },
+    {
+      "id": 4,
+      "lote_pt_id": 2,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Llenado y Tapado",
+      "linea_equipo": "Línea Envasado Yogur 2",
+      "timestamp_evento": "2026-09-03 11:30:00",
+      "observaciones": "980 botellas de 1L envasadas con precinto de seguridad."
+    },
+    {
+      "id": 5,
+      "lote_pt_id": 3,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-23 23:15:26",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-661. Cantidad: 1000 Horma."
+    },
+    {
+      "id": 6,
+      "lote_pt_id": 4,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Envasado Yogur 2",
+      "timestamp_evento": "2026-09-23 23:18:27",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-294. Cantidad: 1000 Botella 1L."
+    },
+    {
+      "id": 7,
+      "lote_pt_id": 5,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 2 (Tina 3)",
+      "timestamp_evento": "2026-09-23 23:19:13",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-537. Cantidad: 500 Barra."
+    },
+    {
+      "id": 8,
+      "lote_pt_id": 6,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-23 23:21:02",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-307. Cantidad: 1500 Horma."
+    },
+    {
+      "id": 9,
+      "lote_pt_id": 6,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: APROBADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:22:01",
+      "observaciones": "Estado del lote modificado de EN_PROCESO a APROBADO"
+    },
+    {
+      "id": 10,
+      "lote_pt_id": 2,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: RECHAZADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:22:22",
+      "observaciones": "Estado del lote modificado de CUARENTENA a RECHAZADO"
+    },
+    {
+      "id": 11,
+      "lote_pt_id": 3,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: DESPACHADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:22:31",
+      "observaciones": "Estado del lote modificado de EN_PROCESO a DESPACHADO"
+    },
+    {
+      "id": 12,
+      "lote_pt_id": 4,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: DESPACHADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:23:12",
+      "observaciones": "Aprobado tras análisis fisicoquímico"
+    },
+    {
+      "id": 13,
+      "lote_pt_id": 5,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: CUARENTENA",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:23:54",
+      "observaciones": "Estado del lote modificado de EN_PROCESO a CUARENTENA"
+    },
+    {
+      "id": 14,
+      "lote_pt_id": 7,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-23 23:46:16",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-TEST-976075. Cantidad: 250 Horma."
+    },
+    {
+      "id": 15,
+      "lote_pt_id": 8,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-23 23:51:07",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-TEST-267672. Cantidad: 250 Horma."
+    },
+    {
+      "id": 16,
+      "lote_pt_id": 9,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-23 23:53:45",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-TEST-425941. Cantidad: 250 Horma."
+    },
+    {
+      "id": 17,
+      "lote_pt_id": 1,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:53:46",
+      "observaciones": "Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata"
+    },
+    {
+      "id": 18,
+      "lote_pt_id": 3,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:53:46",
+      "observaciones": "Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata"
+    },
+    {
+      "id": 19,
+      "lote_pt_id": 6,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:53:46",
+      "observaciones": "Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata"
+    },
+    {
+      "id": 20,
+      "lote_pt_id": 7,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:53:46",
+      "observaciones": "Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata"
+    },
+    {
+      "id": 21,
+      "lote_pt_id": 8,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:53:46",
+      "observaciones": "Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata"
+    },
+    {
+      "id": 22,
+      "lote_pt_id": 9,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-23 23:53:46",
+      "observaciones": "Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata"
+    },
+    {
+      "id": 23,
+      "lote_pt_id": 10,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Envasado Yogur 2",
+      "timestamp_evento": "2026-09-29 18:58:27",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-495. Cantidad: 2000 Botella 1L."
+    },
+    {
+      "id": 24,
+      "lote_pt_id": 11,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-29 18:59:14",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-601. Cantidad: 1800 Horma."
+    },
+    {
+      "id": 25,
+      "lote_pt_id": 11,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: APROBADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-29 19:01:53",
+      "observaciones": "Estado del lote modificado de EN_PROCESO a APROBADO"
+    },
+    {
+      "id": 26,
+      "lote_pt_id": 12,
+      "punto_captura_id": 3,
+      "usuario_id": 1,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Envasado Yogur 2",
+      "timestamp_evento": "2026-09-29 19:04:23",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-804. Cantidad: 1000 Botella 1L."
+    },
+    {
+      "id": 27,
+      "lote_pt_id": 11,
+      "punto_captura_id": 4,
+      "usuario_id": 4,
+      "etapa_nombre": "Cambio de Estado: EN_PROCESO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-29 19:05:32",
+      "observaciones": "Estado del lote modificado de APROBADO a EN_PROCESO"
+    },
+    {
+      "id": 28,
+      "lote_pt_id": 9,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Cambio de Estado: DESPACHADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-29 19:08:37",
+      "observaciones": "Estado del lote modificado de CUARENTENA a DESPACHADO"
+    },
+    {
+      "id": 29,
+      "lote_pt_id": 13,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-29 19:36:06",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-581. Cantidad: 1000 Horma."
+    },
+    {
+      "id": 30,
+      "lote_pt_id": 14,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Envasado Yogur 2",
+      "timestamp_evento": "2026-09-29 20:23:09",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-960. Cantidad: 100 Botella 1L."
+    },
+    {
+      "id": 31,
+      "lote_pt_id": 14,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Cambio de Estado: DESPACHADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-29 20:26:53",
+      "observaciones": "aprobado\n"
+    },
+    {
+      "id": 32,
+      "lote_pt_id": 15,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 2 (Tina 3)",
+      "timestamp_evento": "2026-09-29 20:41:22",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-297. Cantidad: 2000 Barra."
+    },
+    {
+      "id": 33,
+      "lote_pt_id": 17,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-09-29 20:42:31",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-005. Cantidad: 2000 Horma."
+    },
+    {
+      "id": 34,
+      "lote_pt_id": 17,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: DESPACHADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-09-29 20:45:29",
+      "observaciones": "Estado del lote modificado de EN_PROCESO a DESPACHADO"
+    },
+    {
+      "id": 35,
+      "lote_pt_id": 18,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea Quesería 1 (Tinas 1 y 2)",
+      "timestamp_evento": "2026-10-09 13:20:30",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-110. Cantidad: 1000 Horma."
+    },
+    {
+      "id": 36,
+      "lote_pt_id": 6,
+      "punto_captura_id": 4,
+      "usuario_id": 2,
+      "etapa_nombre": "Cambio de Estado: DESPACHADO",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-09 13:30:06",
+      "observaciones": "ENTREGADO A ALMACEN \"SOLEADO\""
+    },
+    {
+      "id": 37,
+      "lote_pt_id": 19,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Termosellado",
+      "linea_equipo": "Paila Dulcera 1 - Dosificadora Automática",
+      "timestamp_evento": "2026-09-05 14:00:00",
+      "observaciones": "750 potes de 400g envasados y rotulados con código QR."
+    },
+    {
+      "id": 38,
+      "lote_pt_id": 6,
+      "punto_captura_id": 6,
+      "usuario_id": 2,
+      "etapa_nombre": "Despacho y Expedición a Cliente",
+      "linea_equipo": "Scania R450 Semirremolque Frío [Dominio: AD-905-MN]",
+      "timestamp_evento": "2026-10-11 20:57:48",
+      "observaciones": "Destino: Supermercados del Centro S.A. (Av. Alem 1450, Córdoba Capital). Remito: R-0004-61597345. Chofer: Lucas Peralta. Cadena de frío verificada (3.6°C)."
+    },
+    {
+      "id": 39,
+      "lote_pt_id": 9,
+      "punto_captura_id": 6,
+      "usuario_id": 2,
+      "etapa_nombre": "Despacho y Expedición a Cliente",
+      "linea_equipo": "Iveco Daily Refrigerado [Dominio: AE-719-LP]",
+      "timestamp_evento": "2026-10-11 20:57:48",
+      "observaciones": "Destino: Coto C.I.C.S.A. - CD Rosario (Circunvalación y Ayacucho, Rosario, Santa Fe). Remito: R-0004-47665437. Chofer: Roberto Funes. Cadena de frío verificada (4.1°C)."
+    },
+    {
+      "id": 40,
+      "lote_pt_id": 17,
+      "punto_captura_id": 6,
+      "usuario_id": 2,
+      "etapa_nombre": "Despacho y Expedición a Cliente",
+      "linea_equipo": "Iveco Daily Refrigerado [Dominio: AE-719-LP]",
+      "timestamp_evento": "2026-10-11 20:57:48",
+      "observaciones": "Destino: Hiper Libertad - Sucursal Villa María (Ruta 158 y Scalabrini Ortiz, Villa María, Cba). Remito: R-0004-15290485. Chofer: Roberto Funes. Cadena de frío verificada (4.1°C)."
+    },
+    {
+      "id": 41,
+      "lote_pt_id": 4,
+      "punto_captura_id": 6,
+      "usuario_id": 2,
+      "etapa_nombre": "Despacho y Expedición a Cliente",
+      "linea_equipo": "Mercedes-Benz Atego Térmico [Dominio: AF-482-ZX]",
+      "timestamp_evento": "2026-10-11 20:57:48",
+      "observaciones": "Destino: Supermercados La Anónima S.A. (Av. San Martín 450, Río Cuarto, Córdoba). Remito: R-0004-39308800. Chofer: Marcelo Benítez. Cadena de frío verificada (3.9°C)."
+    },
+    {
+      "id": 42,
+      "lote_pt_id": 14,
+      "punto_captura_id": 6,
+      "usuario_id": 2,
+      "etapa_nombre": "Despacho y Expedición a Cliente",
+      "linea_equipo": "Scania R450 Semirremolque Frío [Dominio: AD-905-MN]",
+      "timestamp_evento": "2026-10-11 20:57:48",
+      "observaciones": "Destino: Cadena Regional HiperMayorista (Ruta 9 Km 554, Bell Ville, Cba). Remito: R-0004-49803704. Chofer: Lucas Peralta. Cadena de frío verificada (3.6°C)."
+    },
+    {
+      "id": 43,
+      "lote_pt_id": 20,
+      "punto_captura_id": 3,
+      "usuario_id": 3,
+      "etapa_nombre": "Envasado y Generación QR",
+      "linea_equipo": "Línea de Paila Dulcera 1",
+      "timestamp_evento": "2026-10-11 21:10:16",
+      "observaciones": "Fraccionamiento primario y emisión de rótulo QR para lote LPT-2026-518. Cantidad: 800 Pote 400g."
+    },
+    {
+      "id": 44,
+      "lote_pt_id": 20,
+      "punto_captura_id": 6,
+      "usuario_id": 2,
+      "etapa_nombre": "Despacho y Expedición a Cliente",
+      "linea_equipo": "Scania R450 Semirremolque Frío [Dominio: AD-905-MN]",
+      "timestamp_evento": "2026-10-11 21:11:02",
+      "observaciones": "Destino: Supermercados del Centro S.A. (Av. Alem 1450, Córdoba Capital). Remito: R-0004-84776065. Chofer: Lucas Peralta. Cadena de frío verificada (3.6°C). "
+    },
+    {
+      "id": 45,
+      "lote_pt_id": 6,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 46,
+      "lote_pt_id": 9,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 47,
+      "lote_pt_id": 11,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 48,
+      "lote_pt_id": 13,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 49,
+      "lote_pt_id": 17,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 50,
+      "lote_pt_id": 18,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 51,
+      "lote_pt_id": 19,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    },
+    {
+      "id": 52,
+      "lote_pt_id": 20,
+      "punto_captura_id": 4,
+      "usuario_id": 1,
+      "etapa_nombre": "Bloqueo Preventivo Recall",
+      "linea_equipo": null,
+      "timestamp_evento": "2026-10-11 21:29:03",
+      "observaciones": "producto en mal estado"
+    }
+  ],
+  "controles_calidad": [
+    {
+      "id": 1,
+      "lote_pt_id": 1,
+      "usuario_id": 4,
+      "fecha_control": "2026-09-03 09:30:00",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.22",
+      "parametro_2_nombre": "Materia Grasa (Grasa Butirosa)",
+      "parametro_2_valor": "49.5%",
+      "resultado": "CONFORME",
+      "observaciones": "Parámetros fisicoquímicos cumplen norma IRAM e informe SENASA."
+    },
+    {
+      "id": 2,
+      "lote_pt_id": 2,
+      "usuario_id": 4,
+      "fecha_control": "2026-09-03 16:00:00",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "4.35",
+      "parametro_2_nombre": "Recuento Bacterias Lácticas",
+      "parametro_2_valor": "1.2x10^8 UFC/g",
+      "resultado": "CONFORME",
+      "observaciones": "En período de cuarentena protocolar de 24h para liberación microbiológica."
+    },
+    {
+      "id": 3,
+      "lote_pt_id": 19,
+      "usuario_id": 4,
+      "fecha_control": "2026-09-05 15:30:00",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "6.05",
+      "parametro_2_nombre": "Grados Brix (°Bx)",
+      "parametro_2_valor": "68.2 °Bx",
+      "resultado": "CONFORME",
+      "observaciones": "Humedad 29.5%, consistencia y brillo conformes con Código Alimentario Argentino."
+    },
+    {
+      "id": 4,
+      "lote_pt_id": 3,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 5,
+      "lote_pt_id": 6,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 6,
+      "lote_pt_id": 7,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 7,
+      "lote_pt_id": 8,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 8,
+      "lote_pt_id": 9,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 9,
+      "lote_pt_id": 11,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 10,
+      "lote_pt_id": 13,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 11,
+      "lote_pt_id": 17,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 12,
+      "lote_pt_id": 18,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 13,
+      "lote_pt_id": 5,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 14,
+      "lote_pt_id": 15,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "5.24",
+      "parametro_2_nombre": "Materia Grasa s/ES",
+      "parametro_2_valor": "48.8%",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 15,
+      "lote_pt_id": 4,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "4.38",
+      "parametro_2_nombre": "Acidez Titulable (°Dornic)",
+      "parametro_2_valor": "82 °D",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 16,
+      "lote_pt_id": 10,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "4.38",
+      "parametro_2_nombre": "Acidez Titulable (°Dornic)",
+      "parametro_2_valor": "82 °D",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 17,
+      "lote_pt_id": 12,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "4.38",
+      "parametro_2_nombre": "Acidez Titulable (°Dornic)",
+      "parametro_2_valor": "82 °D",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 18,
+      "lote_pt_id": 14,
+      "usuario_id": 4,
+      "fecha_control": "2026-10-11 20:57:48",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "4.38",
+      "parametro_2_nombre": "Acidez Titulable (°Dornic)",
+      "parametro_2_valor": "82 °D",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico conforme al Código Alimentario Argentino (CAA)."
+    },
+    {
+      "id": 19,
+      "lote_pt_id": 20,
+      "usuario_id": 3,
+      "fecha_control": "2026-10-11 21:10:16",
+      "parametro_1_nombre": "pH",
+      "parametro_1_valor": "6.05",
+      "parametro_2_nombre": "Sólidos Solubles (°Brix)",
+      "parametro_2_valor": "68.5 °Bx",
+      "resultado": "CONFORME",
+      "observaciones": "Ensayo analítico de lote LPT-2026-518 dentro de los parámetros del Código Alimentario Argentino (CAA)."
+    }
+  ],
+  "clientes": [
+    {
+      "id": 1,
+      "cuit": "30-68945231-9",
+      "razon_social": "Supermercados del Centro S.A.",
+      "direccion": "Av. Alem 1450, Córdoba Capital",
+      "telefono": "+54 351 489-2200",
+      "created_at": "2026-09-23 22:55:48"
+    },
+    {
+      "id": 2,
+      "cuit": "33-71239845-9",
+      "razon_social": "Distribuidora Láctea San Cayetano",
+      "direccion": "Bv. España 560, Villa María, Cba",
+      "telefono": "+54 353 453-1122",
+      "created_at": "2026-09-23 22:55:48"
+    },
+    {
+      "id": 3,
+      "cuit": "30-54982134-4",
+      "razon_social": "Cadena Regional HiperMayorista",
+      "direccion": "Ruta 9 Km 554, Bell Ville, Cba",
+      "telefono": "+54 3537 42-8890",
+      "created_at": "2026-09-23 22:55:48"
+    },
+    {
+      "id": 4,
+      "cuit": "30-54872199-3",
+      "razon_social": "Coto C.I.C.S.A. - CD Rosario",
+      "direccion": "Circunvalación y Ayacucho, Rosario, Santa Fe",
+      "telefono": "+54 341 480-1100",
+      "created_at": "2026-10-09 13:54:27"
+    },
+    {
+      "id": 5,
+      "cuit": "30-50111222-1",
+      "razon_social": "Supermercados La Anónima S.A.",
+      "direccion": "Av. San Martín 450, Río Cuarto, Córdoba",
+      "telefono": "+54 358 464-9000",
+      "created_at": "2026-10-09 13:54:27"
+    },
+    {
+      "id": 6,
+      "cuit": "30-61223344-5",
+      "razon_social": "Hiper Libertad - Sucursal Villa María",
+      "direccion": "Ruta 158 y Scalabrini Ortiz, Villa María, Cba",
+      "telefono": "+54 353 461-8800",
+      "created_at": "2026-10-09 13:54:27"
+    }
+  ],
+  "despachos": [
+    {
+      "id": 1,
+      "lote_pt_id": 1,
+      "cliente_id": 1,
+      "numero_remito": "R-0001-00045231",
+      "fecha_despacho": "2026-09-04 08:30:00",
+      "cantidad_despachada": 80,
+      "usuario_id": 2
+    },
+    {
+      "id": 2,
+      "lote_pt_id": 1,
+      "cliente_id": 2,
+      "numero_remito": "R-0001-00045232",
+      "fecha_despacho": "2026-09-04 11:00:00",
+      "cantidad_despachada": 60,
+      "usuario_id": 2
+    },
+    {
+      "id": 3,
+      "lote_pt_id": 6,
+      "cliente_id": 1,
+      "numero_remito": "R-0004-61597345",
+      "fecha_despacho": "2026-10-11 20:57:48",
+      "cantidad_despachada": 1500,
+      "usuario_id": 2
+    },
+    {
+      "id": 4,
+      "lote_pt_id": 9,
+      "cliente_id": 4,
+      "numero_remito": "R-0004-47665437",
+      "fecha_despacho": "2026-10-11 20:57:48",
+      "cantidad_despachada": 250,
+      "usuario_id": 2
+    },
+    {
+      "id": 5,
+      "lote_pt_id": 17,
+      "cliente_id": 6,
+      "numero_remito": "R-0004-15290485",
+      "fecha_despacho": "2026-10-11 20:57:48",
+      "cantidad_despachada": 2000,
+      "usuario_id": 2
+    },
+    {
+      "id": 6,
+      "lote_pt_id": 4,
+      "cliente_id": 5,
+      "numero_remito": "R-0004-39308800",
+      "fecha_despacho": "2026-10-11 20:57:48",
+      "cantidad_despachada": 1000,
+      "usuario_id": 2
+    },
+    {
+      "id": 7,
+      "lote_pt_id": 14,
+      "cliente_id": 3,
+      "numero_remito": "R-0004-49803704",
+      "fecha_despacho": "2026-10-11 20:57:48",
+      "cantidad_despachada": 100,
+      "usuario_id": 2
+    },
+    {
+      "id": 8,
+      "lote_pt_id": 20,
+      "cliente_id": 1,
+      "numero_remito": "R-0004-84776065",
+      "fecha_despacho": "2026-10-11 21:11:02",
+      "cantidad_despachada": 800,
+      "usuario_id": 2
+    }
+  ]
+}
