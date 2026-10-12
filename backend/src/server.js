@@ -16,11 +16,12 @@ const startServer = async () => {
     console.log(`[DATABASE OK] Conectado exitosamente a la base MySQL '${info.db_name || 'trackfinal_db'}' (${info.now}) - Versión: ${info.version}`);
 
     // 2. Levantar servidor HTTP
-    const server = app.listen(PORT, () => {
+    const HOST = process.env.HOST || '0.0.0.0';
+    const server = app.listen(PORT, HOST, () => {
       console.log('=============================================================');
       console.log(`  TRACKFINAL API REST — KIT AVZ-03 (MySQL Edition)`);
       console.log(`  Lácteos San Antonio S.A. | Planta Villa María`);
-      console.log(`  Servidor escuchando en: http://localhost:${PORT}`);
+      console.log(`  Servidor escuchando en: http://${HOST}:${PORT}`);
       console.log(`  Healthcheck: http://localhost:${PORT}/api/v1/health`);
       console.log(`  Entorno: ${process.env.NODE_ENV || 'development'}`);
       console.log('=============================================================');

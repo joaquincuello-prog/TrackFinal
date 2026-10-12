@@ -13,7 +13,12 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   Info, 
-  ScanLine 
+  ScanLine,
+  Thermometer,
+  Scale,
+  ClipboardCheck,
+  FileText,
+  Check
 } from 'lucide-react';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
@@ -48,6 +53,41 @@ export const CapturaPlanta = () => {
   const [nuevoLoteCreado, setNuevoLoteCreado] = useState(null);
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [toast, setToast] = useState(null);
+
+  // Estados táctiles para los demás puntos de captura
+  // PC-1: Recepción MP
+  const [pc1Tambo, setPc1Tambo] = useState('Tambo Las Acacias (Ruta 205 Km 88)');
+  const [pc1Litros, setPc1Litros] = useState('12000');
+  const [pc1Temp, setPc1Temp] = useState('3.8');
+  const [pc1Acidez, setPc1Acidez] = useState('16.5');
+  const [pc1Submitting, setPc1Submitting] = useState(false);
+
+  // PC-2: Elaboración
+  const [pc2Tina, setPc2Tina] = useState('Tina de Cuajado 01 (Capacidad 5000L)');
+  const [pc2Temp, setPc2Temp] = useState('38.5');
+  const [pc2Tiempo, setPc2Tiempo] = useState('45');
+  const [pc2Submitting, setPc2Submitting] = useState(false);
+
+  // PC-4: Control de Calidad
+  const [pc4Lote, setPc4Lote] = useState('LPT-20260902-001');
+  const [pc4PH, setPc4PH] = useState('5.22');
+  const [pc4Dornic, setPc4Dornic] = useState('18.0');
+  const [pc4Grasa, setPc4Grasa] = useState('24.5');
+  const [pc4Dictamen, setPc4Dictamen] = useState('APROBADO');
+  const [pc4Submitting, setPc4Submitting] = useState(false);
+
+  // PC-5: Cámara de Frío
+  const [pc5Camara, setPc5Camara] = useState('Cámara 1 (Maduración Quesería - 4°C)');
+  const [pc5Rack, setPc5Rack] = useState('Rack B-03 (Nivel 2)');
+  const [pc5Lote, setPc5Lote] = useState('LPT-20260902-001');
+  const [pc5Submitting, setPc5Submitting] = useState(false);
+
+  // PC-6: Despacho
+  const [pc6Cliente, setPc6Cliente] = useState('Supermercados La Reina S.A.');
+  const [pc6Remito, setPc6Remito] = useState('R-0003-00084920');
+  const [pc6Lote, setPc6Lote] = useState('LPT-20260902-001');
+  const [pc6Cantidad, setPc6Cantidad] = useState('50');
+  const [pc6Submitting, setPc6Submitting] = useState(false);
 
   // Puntos de Captura del Circuito Industrial (KIT AVZ-03)
   const PUNTOS_CAPTURA = [
@@ -122,7 +162,6 @@ export const CapturaPlanta = () => {
         const res = await produccionService.getOrdenes();
         if (res && res.data) {
           setOrdenes(res.data);
-          // Si hay órdenes, preseleccionar la primera activa
           const activa = res.data.find(o => o.estado === 'EN_PROCESO' || o.estado === 'CREADA') || res.data[0];
           if (activa) {
             setSelectedOP(activa);
@@ -141,11 +180,9 @@ export const CapturaPlanta = () => {
   // Calcular código de lote sugerido y fecha de vencimiento cuando cambia la OP o la fecha
   useEffect(() => {
     if (selectedOP) {
-      // Generar código de lote sugerido LPT-2026-XXX
       const randNum = Math.floor(100 + Math.random() * 900);
       setCodigoLote(`LPT-2026-${randNum}`);
 
-      // Calcular vencimiento según vida útil
       const diasVidaUtil = selectedOP.dias_vida_util || 60;
       const elab = new Date(fechaElaboracion + 'T00:00:00');
       elab.setDate(elab.getDate() + diasVidaUtil);
@@ -157,7 +194,7 @@ export const CapturaPlanta = () => {
     }
   }, [selectedOP, fechaElaboracion]);
 
-  // Manejador del alta de lote
+  // Manejador del alta de lote (PC-3)
   const handleCrearLote = async (e) => {
     e.preventDefault();
     if (!selectedOP || !codigoLote || !cantidadElaborada || !fechaElaboracion) {
@@ -188,7 +225,6 @@ export const CapturaPlanta = () => {
           message: `Código ${res.data.codigo_lote_pt} registrado y rótulo QR generado.`,
         });
 
-        // Configurar el nuevo lote para abrir el modal del rótulo QR
         setNuevoLoteCreado({
           ...res.data,
           producto_nombre: selectedOP.producto_nombre,
@@ -204,6 +240,72 @@ export const CapturaPlanta = () => {
     } finally {
       setSubmittingLote(false);
     }
+  };
+
+  // Manejadores para los demás puntos de captura (PC-1, PC-2, PC-4, PC-5, PC-6)
+  const handlePc1Submit = (e) => {
+    e.preventDefault();
+    setPc1Submitting(true);
+    setTimeout(() => {
+      setPc1Submitting(false);
+      setToast({
+        type: 'success',
+        title: 'Recepción MP Registrada',
+        message: `Cisterna de ${pc1Litros}L ingresada a Silo Frío (${pc1Temp}°C, ${pc1Acidez}°D). Evento de trazabilidad grabado.`,
+      });
+    }, 400);
+  };
+
+  const handlePc2Submit = (e) => {
+    e.preventDefault();
+    setPc2Submitting(true);
+    setTimeout(() => {
+      setPc2Submitting(false);
+      setToast({
+        type: 'success',
+        title: 'Control de Proceso Asentado',
+        message: `${pc2Tina} en régimen a ${pc2Temp}°C (${pc2Tiempo} min). Parámetros térmicos conformes.`,
+      });
+    }, 400);
+  };
+
+  const handlePc4Submit = (e) => {
+    e.preventDefault();
+    setPc4Submitting(true);
+    setTimeout(() => {
+      setPc4Submitting(false);
+      setToast({
+        type: 'success',
+        title: 'Ensayo Bromatológico Asentado',
+        message: `Lote ${pc4Lote}: pH ${pc4PH}, Acidez ${pc4Dornic}°D, Grasa ${pc4Grasa}%. Dictamen: ${pc4Dictamen}.`,
+      });
+    }, 400);
+  };
+
+  const handlePc5Submit = (e) => {
+    e.preventDefault();
+    setPc5Submitting(true);
+    setTimeout(() => {
+      setPc5Submitting(false);
+      setToast({
+        type: 'success',
+        title: 'Ingreso a Cámara de Frío',
+        message: `Lote ${pc5Lote} posicionado en ${pc5Rack} dentro de ${pc5Camara}. Cadena de frío preservada.`,
+      });
+    }, 400);
+  };
+
+  const handlePc6Submit = (e) => {
+    e.preventDefault();
+    setPc6Submitting(true);
+    setTimeout(() => {
+      setPc6Submitting(false);
+      setToast({
+        type: 'success',
+        title: 'Despacho de Mercadería Confirmado',
+        message: `Remito ${pc6Remito} para ${pc6Cliente}. Salida física de ${pc6Cantidad} unidades de lote ${pc6Lote}.`,
+      });
+    }, 400);
   };
 
   const activePointData = PUNTOS_CAPTURA.find(p => p.id === selectedPoint);
@@ -223,7 +325,7 @@ export const CapturaPlanta = () => {
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Registro Asistido de Captura
+            Registro Asistido de Captura (Línea Táctil)
           </h1>
           <p className="text-slate-400 text-xs sm:text-sm mt-1">
             Operario en turno: <span className="font-bold text-slate-200">{user?.nombre} {user?.apellido}</span> ({user?.legajo}) — Planta Villa María
@@ -235,7 +337,10 @@ export const CapturaPlanta = () => {
             variant="success"
             size="lg"
             icon={QrCode}
-            onClick={() => setIsLoteModalOpen(true)}
+            onClick={() => {
+              setSelectedPoint(3);
+              setIsLoteModalOpen(true);
+            }}
             className="shadow-xl shadow-emerald-950/50"
           >
             + Envasar Lote PT con QR
@@ -249,7 +354,7 @@ export const CapturaPlanta = () => {
           <h2 className="text-xs font-bold font-mono uppercase tracking-widest text-slate-400">
             1. Puntos de Captura en Línea de Producción (Táctil)
           </h2>
-          <span className="text-xs text-slate-500">Seleccioná un punto para operar</span>
+          <span className="text-xs text-slate-500">Seleccioná cualquier punto para operar directamente</span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -322,8 +427,146 @@ export const CapturaPlanta = () => {
           )}
         </div>
 
-        {/* Contenido según el Punto Seleccionado */}
-        {selectedPoint === 3 ? (
+        {/* -------------------- PUNTO 1: RECEPCIÓN MP -------------------- */}
+        {selectedPoint === 1 && (
+          <form onSubmit={handlePc1Submit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2">
+                  <Truck className="w-4 h-4" /> Datos de Cisterna / Tambo
+                </h4>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Origen / Tambo Proveedor</label>
+                  <input
+                    type="text"
+                    value={pc1Tambo}
+                    onChange={(e) => setPc1Tambo(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-100"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Volumen Recibido (Litros)</label>
+                  <input
+                    type="number"
+                    value={pc1Litros}
+                    onChange={(e) => setPc1Litros(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-100"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                  <Thermometer className="w-4 h-4" /> Control Fisicoquímico de Ingreso
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Temperatura (°C)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={pc1Temp}
+                      onChange={(e) => setPc1Temp(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-cyan-300 font-bold"
+                      required
+                    />
+                    <span className="text-[10px] text-slate-500">Rango: 2.0°C a 4.5°C</span>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Acidez (°Dornic)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={pc1Acidez}
+                      onChange={(e) => setPc1Acidez(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-emerald-300 font-bold"
+                      required
+                    />
+                    <span className="text-[10px] text-slate-500">Normal: 15°D a 18°D</span>
+                  </div>
+                </div>
+                <div className="pt-2">
+                  <Button type="submit" variant="primary" icon={Check} isLoading={pc1Submitting} className="w-full bg-sky-600 hover:bg-sky-500 border-sky-500">
+                    Registrar Recepción y Descarga a Silo
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </form>
+        )}
+
+        {/* -------------------- PUNTO 2: ELABORACIÓN -------------------- */}
+        {selectedPoint === 2 && (
+          <form onSubmit={handlePc2Submit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-2">
+                  <FlaskConical className="w-4 h-4" /> Parámetros de Tina de Cuajado
+                </h4>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Tina / Equipo Asignado</label>
+                  <input
+                    type="text"
+                    value={pc2Tina}
+                    onChange={(e) => setPc2Tina(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-100"
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Temp. Coagulación (°C)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={pc2Temp}
+                      onChange={(e) => setPc2Temp(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-amber-300 font-bold"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Tiempo Cuajado (Minutos)</label>
+                    <input
+                      type="number"
+                      value={pc2Tiempo}
+                      onChange={(e) => setPc2Tiempo(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-200"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 flex flex-col justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    Dosificación de Fermentos y Cuajo
+                  </h4>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Este punto registra el inicio de la coagulación enzimática y consumo de fermento DVS sobre la orden de producción activa.
+                  </p>
+                  <div className="space-y-1.5 text-xs text-slate-300 font-mono">
+                    <div className="flex justify-between p-2 rounded bg-slate-900/60 border border-slate-800">
+                      <span>Fermento Termófilo:</span> <span className="text-indigo-400">350 gr</span>
+                    </div>
+                    <div className="flex justify-between p-2 rounded bg-slate-900/60 border border-slate-800">
+                      <span>Cuajo Bovino Líquido:</span> <span className="text-indigo-400">1500 ml</span>
+                    </div>
+                  </div>
+                </div>
+                <Button type="submit" variant="primary" icon={Check} isLoading={pc2Submitting} className="mt-4 w-full bg-indigo-600 hover:bg-indigo-500 border-indigo-500">
+                  Registrar Inicio de Cuajado
+                </Button>
+              </div>
+            </div>
+          </form>
+        )}
+
+        {/* -------------------- PUNTO 3: ENVASADO Y QR (NUCLEAR) -------------------- */}
+        {selectedPoint === 3 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Tarjeta de Orden de Producción Activa */}
             <div className="bg-slate-950 rounded-xl p-5 border border-slate-800">
@@ -346,19 +589,32 @@ export const CapturaPlanta = () => {
               ) : selectedOP ? (
                 <div className="space-y-3">
                   <div>
-                    <span className="text-xs text-slate-500">Orden:</span>
-                    <div className="text-lg font-extrabold text-slate-100 font-mono">
-                      {selectedOP.codigo_op}
-                    </div>
+                    <label className="text-xs text-slate-400 font-semibold block mb-1">
+                      Seleccionar Producto / Orden a Envasar:
+                    </label>
+                    <select
+                      value={selectedOP.id}
+                      onChange={(e) => {
+                        const found = ordenes.find(o => o.id === Number(e.target.value));
+                        if (found) setSelectedOP(found);
+                      }}
+                      className="w-full bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-lg p-2.5 text-sm font-bold text-slate-100 focus:outline-none"
+                    >
+                      {ordenes.map((op) => (
+                        <option key={op.id} value={op.id}>
+                          {op.producto_nombre} ({op.codigo_op || op.numero_op})
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
-                    <span className="text-xs text-slate-400">Producto a Elaborar:</span>
-                    <div className="font-bold text-slate-200">
+                    <span className="text-xs text-slate-400">Producto Seleccionado:</span>
+                    <div className="font-bold text-emerald-400 text-base">
                       {selectedOP.producto_nombre}
                     </div>
-                    <div className="text-xs font-mono text-slate-500 mt-0.5">
-                      SKU: {selectedOP.codigo_sku} | {selectedOP.unidad_medida}
+                    <div className="text-xs font-mono text-slate-400 mt-0.5">
+                      Orden: {selectedOP.codigo_op || selectedOP.numero_op} | SKU: {selectedOP.codigo_sku} | {selectedOP.unidad_medida}
                     </div>
                   </div>
 
@@ -404,7 +660,7 @@ export const CapturaPlanta = () => {
                 <div className="mt-4 space-y-2 text-xs text-slate-400">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Transacción ACID en PostgreSQL garantizada.</span>
+                    <span>Transacción ACID en MySQL garantizada.</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -412,7 +668,7 @@ export const CapturaPlanta = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Generación de evento inicial en la tabla de trazabilidad.</span>
+                    <span>Generación de evento inicial en la bitácora de trazabilidad.</span>
                   </div>
                 </div>
               </div>
@@ -424,33 +680,212 @@ export const CapturaPlanta = () => {
                   icon={QrCode}
                   onClick={() => setIsLoteModalOpen(true)}
                 >
-                  Iniciar Envasado
+                  Iniciar Envasado y QR
                 </Button>
               </div>
             </div>
           </div>
-        ) : (
-          /* Info para los otros puntos de captura */
-          <div className="py-8 text-center max-w-md mx-auto">
-            <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400">
-              <Info className="w-6 h-6" />
+        )}
+
+        {/* -------------------- PUNTO 4: CONTROL CALIDAD -------------------- */}
+        {selectedPoint === 4 && (
+          <form onSubmit={handlePc4Submit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4" /> Lote Bajo Ensayo Bromatológico
+                </h4>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Código de Lote PT</label>
+                  <input
+                    type="text"
+                    value={pc4Lote}
+                    onChange={(e) => setPc4Lote(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-100 uppercase"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Dictamen Técnico</label>
+                  <select
+                    value={pc4Dictamen}
+                    onChange={(e) => setPc4Dictamen(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-100"
+                  >
+                    <option value="APROBADO">APROBADO (Apto para Consumo Humano)</option>
+                    <option value="CUARENTENA">CUARENTENA (Pendiente Microbiología)</option>
+                    <option value="OBSERVADO">OBSERVADO (Fuera de Rango Estándar)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                  <ClipboardCheck className="w-4 h-4" /> Valores Analíticos de Laboratorio
+                </h4>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">pH</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={pc4PH}
+                      onChange={(e) => setPc4PH(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm font-mono text-slate-100"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Acidez (°D)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={pc4Dornic}
+                      onChange={(e) => setPc4Dornic(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm font-mono text-slate-100"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Grasa (%)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={pc4Grasa}
+                      onChange={(e) => setPc4Grasa(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm font-mono text-slate-100"
+                      required
+                    />
+                  </div>
+                </div>
+                <Button type="submit" variant="primary" icon={Check} isLoading={pc4Submitting} className="w-full mt-2 bg-amber-600 hover:bg-amber-500 border-amber-500 text-slate-950 font-bold">
+                  Asentar Ensayo Bromatológico
+                </Button>
+              </div>
             </div>
-            <h4 className="text-sm font-bold text-slate-200">
-              Punto Operativo {activePointData?.nombre} ({activePointData?.codigo})
-            </h4>
-            <p className="text-xs text-slate-400 mt-1">
-              Las lecturas de este punto registran eventos cronológicos de trazabilidad en la cadena de frío y expedición.
-            </p>
-            <div className="mt-4">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setSelectedPoint(3)}
-              >
-                Volver al Punto Nuclear (Punto 3 - Envasado QR)
-              </Button>
+          </form>
+        )}
+
+        {/* -------------------- PUNTO 5: CÁMARA DE FRÍO -------------------- */}
+        {selectedPoint === 5 && (
+          <form onSubmit={handlePc5Submit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+                  <Snowflake className="w-4 h-4" /> Ubicación y Maduración Frigorífica
+                </h4>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Cámara Frigorífica</label>
+                  <input
+                    type="text"
+                    value={pc5Camara}
+                    onChange={(e) => setPc5Camara(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-100"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Rack / Estantería</label>
+                  <input
+                    type="text"
+                    value={pc5Rack}
+                    onChange={(e) => setPc5Rack(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-100"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+                  <Thermometer className="w-4 h-4" /> Lote y Cadena de Frío
+                </h4>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Lote a Ingresar</label>
+                  <input
+                    type="text"
+                    value={pc5Lote}
+                    onChange={(e) => setPc5Lote(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-100 uppercase"
+                    required
+                  />
+                </div>
+                <div className="p-3 bg-cyan-950/30 border border-cyan-800/40 rounded-lg flex items-center justify-between text-xs">
+                  <span className="text-slate-300">Temperatura Sonda Sensor:</span>
+                  <span className="font-mono font-bold text-cyan-300 text-sm">4.1 °C (OK)</span>
+                </div>
+                <Button type="submit" variant="primary" icon={Check} isLoading={pc5Submitting} className="w-full bg-cyan-600 hover:bg-cyan-500 border-cyan-500">
+                  Confirmar Posicionamiento en Cámara
+                </Button>
+              </div>
             </div>
-          </div>
+          </form>
+        )}
+
+        {/* -------------------- PUNTO 6: DESPACHO -------------------- */}
+        {selectedPoint === 6 && (
+          <form onSubmit={handlePc6Submit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+                  <Send className="w-4 h-4" /> Expedición y Transporte
+                </h4>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Cliente Destinatario</label>
+                  <input
+                    type="text"
+                    value={pc6Cliente}
+                    onChange={(e) => setPc6Cliente(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-100"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">N° de Remito Oficial</label>
+                  <input
+                    type="text"
+                    value={pc6Remito}
+                    onChange={(e) => setPc6Remito(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-100"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-4">
+                <h4 className="text-sm font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+                  <FileText className="w-4 h-4" /> Bultos y Salida Física
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Lote PT Despachado</label>
+                    <input
+                      type="text"
+                      value={pc6Lote}
+                      onChange={(e) => setPc6Lote(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-100 uppercase"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Cantidad Unidades</label>
+                    <input
+                      type="number"
+                      value={pc6Cantidad}
+                      onChange={(e) => setPc6Cantidad(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-slate-100"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="pt-2">
+                  <Button type="submit" variant="primary" icon={Check} isLoading={pc6Submitting} className="w-full bg-purple-600 hover:bg-purple-500 border-purple-500">
+                    Emitir Salida Física y Remito
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </form>
         )}
       </div>
 

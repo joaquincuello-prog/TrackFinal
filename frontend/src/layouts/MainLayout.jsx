@@ -12,14 +12,19 @@ import {
   Wifi, 
   WifiOff,
   Menu,
-  X
+  X,
+  Network,
+  ScanLine,
+  BarChart3
 } from 'lucide-react';
+import QRScannerModal from '../components/QRScannerModal';
 
 export const MainLayout = () => {
   const { user, logout, hasRole } = useAuth();
   const navigate = useNavigate();
   const [apiOnline, setApiOnline] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   // Monitor healthcheck of backend
   useEffect(() => {
@@ -59,8 +64,22 @@ export const MainLayout = () => {
       label: 'Gestión de Lotes PT',
       icon: Boxes,
       roles: ['ADMIN', 'SUPERVISOR', 'OPERARIO', 'AUDITOR'],
-      badge: 'QR & Estados',
+      badge: 'Estados',
     },
+    {
+      to: '/trazabilidad',
+      label: 'Trazabilidad y Recall',
+      icon: Network,
+      roles: ['ADMIN', 'SUPERVISOR', 'OPERARIO', 'AUDITOR'],
+      badge: 'KIT AVZ-03',
+    },
+    {
+      to: '/dashboard',
+      label: 'Dashboard KPIs',
+      icon: BarChart3,
+      roles: ['ADMIN', 'SUPERVISOR', 'OPERARIO', 'AUDITOR'],
+      badge: 'BI',
+    }
   ];
 
   const filteredNavItems = navItems.filter(item => 
@@ -121,6 +140,16 @@ export const MainLayout = () => {
 
             {/* Right: Status & User Profile */}
             <div className="hidden sm:flex items-center gap-3">
+              {/* Scan Button */}
+              <button
+                onClick={() => setScannerOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all mr-2"
+                title="Abrir Escáner Inteligente"
+              >
+                <ScanLine className="w-4 h-4" />
+                <span className="hidden lg:inline">Escanear Rótulo</span>
+              </button>
+
               {/* API Connection Indicator */}
               <div
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border ${
@@ -230,6 +259,12 @@ export const MainLayout = () => {
           </div>
         </div>
       </footer>
+
+      {/* Global QR Scanner Modal */}
+      <QRScannerModal 
+        isOpen={scannerOpen} 
+        onClose={() => setScannerOpen(false)} 
+      />
     </div>
   );
 };

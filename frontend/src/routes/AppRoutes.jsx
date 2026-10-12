@@ -9,6 +9,8 @@ import MainLayout from '../layouts/MainLayout';
 import Login from '../pages/Login';
 import CapturaPlanta from '../pages/CapturaPlanta';
 import LotesPT from '../pages/LotesPT';
+import Trazabilidad from '../pages/Trazabilidad';
+import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 
 // Guarda
@@ -23,7 +25,7 @@ const RootRedirect = () => {
   if (user?.rol === 'OPERARIO') {
     return <Navigate to="/captura" replace />;
   }
-  return <Navigate to="/lotes" replace />;
+  return <Navigate to="/dashboard" replace />;
 };
 
 export const AppRoutes = () => {
@@ -59,6 +61,26 @@ export const AppRoutes = () => {
           element={
             <ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR', 'OPERARIO', 'AUDITOR']}>
               <LotesPT />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Genealogía y Trazabilidad Avanzada */}
+        <Route
+          path="/trazabilidad"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR', 'OPERARIO', 'AUDITOR']}>
+              <Trazabilidad />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Dashboard de Control Industrial y KPIs */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR', 'OPERARIO', 'AUDITOR']}>
+              <Dashboard />
             </ProtectedRoute>
           }
         />

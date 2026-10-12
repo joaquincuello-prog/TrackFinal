@@ -9,6 +9,7 @@ router.use(authenticateToken);
 // Consulta de lotes PT
 router.get('/', LotesPTController.getAll);
 router.get('/:codigo', LotesPTController.getByCodigo);
+router.get('/:codigo/qr', LotesPTController.getQR);
 
 // Alta atómica de nuevo lote PT con QR (Solo Operarios de planta y Administrador)
 router.post(
@@ -17,10 +18,10 @@ router.post(
   LotesPTController.create
 );
 
-// Cambio de estado de lote (Cuarentena, Bloqueo, Aprobación por Calidad o Supervisor)
+// Cambio de estado de lote (Cuarentena, Bloqueo, Aprobación por Calidad o Supervisor - Auditor solo consulta)
 router.patch(
   '/:codigo/estado',
-  authorizeRoles('SUPERVISOR', 'ADMIN', 'AUDITOR'),
+  authorizeRoles('SUPERVISOR', 'ADMIN'),
   LotesPTController.cambiarEstado
 );
 

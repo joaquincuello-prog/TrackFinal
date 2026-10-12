@@ -82,7 +82,8 @@ ON DUPLICATE KEY UPDATE nombre=VALUES(nombre);
 INSERT INTO ordenes_produccion (id, numero_op, producto_terminado_id, cantidad_planificada, fecha_inicio, fecha_fin, linea_produccion, estado) VALUES
 (1, 'OP-2026-001', 1, 200.00, '2026-09-02 06:00:00', '2026-09-02 14:30:00', 'Línea Quesería 1 (Tinas 1 y 2)', 'FINALIZADA'),
 (2, 'OP-2026-002', 3, 1000.00, '2026-09-03 07:00:00', NULL, 'Línea Envasado Yogur 2', 'EN_PROCESO'),
-(3, 'OP-2026-003', 2, 150.00, '2026-09-04 06:30:00', NULL, 'Línea Quesería 2 (Tina 3)', 'CREADA')
+(3, 'OP-2026-003', 2, 150.00, '2026-09-04 06:30:00', NULL, 'Línea Quesería 2 (Tina 3)', 'EN_PROCESO'),
+(4, 'OP-2026-004', 4, 800.00, '2026-09-05 07:00:00', NULL, 'Línea de Paila Dulcera 1', 'EN_PROCESO')
 ON DUPLICATE KEY UPDATE numero_op=VALUES(numero_op);
 
 -- =============================================================================
@@ -96,7 +97,13 @@ INSERT INTO consumos_materia_prima (id, orden_produccion_id, lote_mp_id, cantida
 (4, 1, 5, 80.00, '2026-09-02 07:15:00', 3),
 (5, 2, 2, 900.00, '2026-09-03 07:30:00', 3),
 (6, 2, 6, 250.00, '2026-09-03 08:00:00', 3),
-(7, 2, 7, 450.00, '2026-09-03 08:15:00', 3)
+(7, 2, 7, 450.00, '2026-09-03 08:15:00', 3),
+(8, 3, 2, 1500.00, '2026-09-04 07:00:00', 3),
+(9, 3, 3, 250.00, '2026-09-04 07:15:00', 3),
+(10, 3, 4, 300.00, '2026-09-04 07:30:00', 3),
+(11, 3, 5, 50.00, '2026-09-04 07:30:00', 3),
+(12, 4, 1, 2400.00, '2026-09-05 07:30:00', 3),
+(13, 4, 7, 500.00, '2026-09-05 08:00:00', 3)
 ON DUPLICATE KEY UPDATE cantidad_consumida=VALUES(cantidad_consumida);
 
 -- =============================================================================

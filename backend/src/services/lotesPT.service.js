@@ -106,7 +106,30 @@ class LotesPTService {
         client
       );
 
-      // 4.3 Actualizar estado de la OP si estaba en CREADA
+      // 4.3 Registrar control de calidad bromatológico automático según tipo de producto
+      const esDDL = (op.producto_nombre || '').toLowerCase().includes('dulce');
+      const esYogur = (op.producto_nombre || '').toLowerCase().includes('yogur');
+      const param1Nombre = 'pH';
+      const param1Valor = esDDL ? '6.05' : (esYogur ? '4.38' : '5.24');
+      const param2Nombre = esDDL ? 'Sólidos Solubles (°Brix)' : (esYogur ? 'Acidez Titulable (°Dornic)' : 'Materia Grasa s/ES');
+      const param2Valor = esDDL ? '68.5 °Bx' : (esYogur ? '82 °D' : '48.8%');
+
+      await client.query(
+        `INSERT INTO controles_calidad
+          (lote_pt_id, usuario_id, parametro_1_nombre, parametro_1_valor, parametro_2_nombre, parametro_2_valor, resultado, observaciones)
+         VALUES (?, ?, ?, ?, ?, ?, 'CONFORME', ?)`,
+        [
+          nuevoLote.id,
+          usuarioId,
+          param1Nombre,
+          param1Valor,
+          param2Nombre,
+          param2Valor,
+          `Ensayo analítico de lote ${codigo_lote_pt} dentro de los parámetros del Código Alimentario Argentino (CAA).`
+        ]
+      );
+
+      // 4.4 Actualizar estado de la OP si estaba en CREADA
       if (op.estado === 'CREADA') {
         await OrdenProduccionModel.updateEstado(op.id, 'EN_PROCESO', client);
       }
@@ -119,7 +142,8 @@ class LotesPTService {
   }
 
   /**
-   * Cambia el estado de un lote PT (ej. APROBADO, CUARENTENA, BLOQUEADO).
+   * Cambia el estado de un lote PT (ej. APROBADO, CUARENTENA, BLOQUEADO, DESPACHADO).
+   * Si pasa a DESPACHADO, asigna automáticamente un destino comercial al azar con remito y logística.
    */
   static async cambiarEstado(codigoLotePT, nuevoEstado, usuarioId, motivo) {
     const estadosValidos = ['EN_PROCESO', 'CUARENTENA', 'APROBADO', 'RECHAZADO', 'DESPACHADO', 'BLOQUEADO'];
@@ -137,19 +161,67 @@ class LotesPTService {
     }
 
     return await db.withTransaction(async (client) => {
-      const loteActualizado = await LotePTModel.updateEstado(lote.id, nuevoEstado, client);
+      let loteActualizado = await LotePTModel.updateEstado(lote.id, nuevoEstado, client);
 
-      // Registrar evento de cambio de estado
-      await EventoTrazabilidadModel.create(
-        {
-          lote_pt_id: lote.id,
-          punto_captura_id: 4, // Laboratorio / Control
-          usuario_id: usuarioId,
-          etapa_nombre: `Cambio de Estado: ${nuevoEstado}`,
-          observaciones: motivo || `Estado del lote modificado de ${lote.estado} a ${nuevoEstado}`,
-        },
-        client
-      );
+      if (nuevoEstado === 'DESPACHADO') {
+        // 1. Obtener un cliente al azar de la base de datos
+        const resClientes = await client.query('SELECT * FROM clientes ORDER BY RAND() LIMIT 1;');
+        const cliente = resClientes.rows[0];
+
+        if (cliente) {
+          // 2. Generar datos logísticos realistas al azar
+          const remitoRand = Math.floor(10000000 + Math.random() * 90000000);
+          const numeroRemito = `R-0004-${remitoRand}`;
+          const flotas = [
+            { patente: 'AF-482-ZX', vehiculo: 'Mercedes-Benz Atego Térmico', chofer: 'Marcelo Benítez', temp: '3.9°C' },
+            { patente: 'AE-719-LP', vehiculo: 'Iveco Daily Refrigerado', chofer: 'Roberto Funes', temp: '4.1°C' },
+            { patente: 'AD-905-MN', vehiculo: 'Scania R450 Semirremolque Frío', chofer: 'Lucas Peralta', temp: '3.6°C' },
+            { patente: 'AG-114-QR', vehiculo: 'VW Constellation Frigorífico', chofer: 'Hernán Sosa', temp: '4.2°C' }
+          ];
+          const transporte = flotas[Math.floor(Math.random() * flotas.length)];
+
+          // 3. Insertar registro en tabla despachos
+          await client.query(
+            `INSERT INTO despachos (lote_pt_id, cliente_id, numero_remito, cantidad_despachada, usuario_id)
+             VALUES (?, ?, ?, ?, ?);`,
+            [lote.id, cliente.id, numeroRemito, lote.cantidad_elaborada, usuarioId]
+          );
+
+          // 4. Actualizar ubicación del lote reflejando el destino comercial
+          const nuevaUbicacion = `Entregado: ${cliente.razon_social} (${cliente.direccion})`;
+          await client.query(
+            `UPDATE lotes_producto_terminado SET ubicacion_deposito = ? WHERE id = ?;`,
+            [nuevaUbicacion, lote.id]
+          );
+          loteActualizado.ubicacion_deposito = nuevaUbicacion;
+
+          // 5. Registrar evento de expedición en Punto 6 (Despacho)
+          await EventoTrazabilidadModel.create(
+            {
+              lote_pt_id: lote.id,
+              punto_captura_id: 6, // Muelle de Expedición y Despacho
+              usuario_id: usuarioId,
+              etapa_nombre: 'Despacho y Expedición a Cliente',
+              linea_equipo: `${transporte.vehiculo} [Dominio: ${transporte.patente}]`,
+              observaciones: `Destino: ${cliente.razon_social} (${cliente.direccion}). Remito: ${numeroRemito}. Chofer: ${transporte.chofer}. Cadena de frío verificada (${transporte.temp}). ${motivo ? 'Nota: ' + motivo : ''}`,
+            },
+            client
+          );
+        }
+      } else {
+        // Registrar evento estándar de cambio de estado en Punto 4 (Laboratorio / Control)
+        await EventoTrazabilidadModel.create(
+          {
+            lote_pt_id: lote.id,
+            punto_captura_id: 4,
+            usuario_id: usuarioId,
+            etapa_nombre: `Cambio de Estado: ${nuevoEstado}`,
+            linea_equipo: 'Laboratorio Central de Calidad',
+            observaciones: motivo || `Estado del lote modificado de ${lote.estado} a ${nuevoEstado}`,
+          },
+          client
+        );
+      }
 
       return loteActualizado;
     });

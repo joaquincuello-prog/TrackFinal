@@ -35,6 +35,29 @@ class TrazabilidadController {
       next(error);
     }
   }
+
+  /**
+   * POST /api/v1/trazabilidad/recall/bloqueo-preventivo
+   * Bloqueo cautelar de todos los lotes PT que contengan un lote de MP observado
+   */
+  static async bloqueoPreventivoRecall(req, res, next) {
+    try {
+      const { codigo_lote_mp, motivo } = req.body;
+      const resultado = await TrazabilidadService.ejecutarBloqueoPreventivo(
+        codigo_lote_mp,
+        req.usuario.id,
+        motivo
+      );
+
+      res.status(200).json({
+        success: true,
+        message: `Protocolo de Recall ejecutado exitosamente para el lote ${codigo_lote_mp}`,
+        data: resultado,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = TrazabilidadController;

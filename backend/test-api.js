@@ -11,9 +11,15 @@
  * 8. Genealogía Hacia Adelante (Recall Logístico)
  */
 
+require('dotenv').config();
 const http = require('http');
+const app = require('./src/app');
+const db = require('./src/config/db');
 
-const BASE_URL = 'http://localhost:3000';
+const PORT = process.env.PORT || 3000;
+const BASE_URL = `http://localhost:${PORT}`;
+
+let serverInstance = null;
 
 // Helper para realizar peticiones HTTP nativas en Node.js
 function request(method, path, body = null, token = null) {
@@ -70,10 +76,21 @@ function assert(condition, message) {
 
 async function runTests() {
   console.log('\n=============================================================');
-  console.log('  SUITE DE PRUEBAS DE INTEGRACIÓN: API TRACKFINAL (SEMANA 4)');
+  console.log('  SUITE DE PRUEBAS DE INTEGRACIÓN: API TRACKFINAL (SEMANAS 6 Y 7)');
   console.log('=============================================================\n');
 
   try {
+    // 0. Levantar servidor si no está activo
+    try {
+      await request('GET', '/api/v1/health');
+    } catch {
+      await new Promise((resolve) => {
+        serverInstance = app.listen(PORT, () => {
+          resolve();
+        });
+      });
+    }
+
     // -------------------------------------------------------------
     // PRUEBA 1: Healthcheck
     // -------------------------------------------------------------
@@ -169,7 +186,7 @@ async function runTests() {
       cantidad_consumida: 150.00,
     }, operarioToken);
     assert(consumoRes.status === 201, `Status HTTP 201 Created en consumo (Obtenido: ${consumoRes.status})`);
-    assert(consumoRes.body.data.consumo.cantidad_consumida === '150.00', 'Cantidad consumida registrada');
+    assert(Number(consumoRes.body.data.consumo.cantidad_consumida) === 150, 'Cantidad consumida registrada numéricamente');
     assert(consumoRes.body.data.lote_mp_actualizado.cantidad_actual !== undefined, 'Stock de materia prima descontado');
 
     // -------------------------------------------------------------
@@ -205,17 +222,52 @@ async function runTests() {
     // PRUEBA 12: Reconstrucción de Genealogía Hacia Adelante (Forward / Recall)
     // -------------------------------------------------------------
     console.log('\n▶ Prueba 12: Motor de Recall Hacia Adelante (Forward Traceability)');
-    const forwardRes = await request('GET', '/api/v1/trazabilidad/forward/MP-LEC-2026-0819', null, operarioToken);
-    assert(forwardRes.status === 200, 'Status HTTP 200 en consulta de recall');
-    assert(forwardRes.body.data.lote_mp === 'MP-LEC-2026-0819', 'Lote de materia prima identificado');
+    const forwardRes = await request('GET', '/api/v1/trazabilidad/forward/LMP-20260901-01', null, operarioToken);
+    assert(forwardRes.status === 200, `Status HTTP 200 en consulta de recall (Obtenido: ${forwardRes.status})`);
+    assert(forwardRes.body.data.lote_mp === 'LMP-20260901-01', 'Lote de materia prima identificado');
     assert(Array.isArray(forwardRes.body.data.productos_afectados), 'Lista de lotes afectados recuperada');
+    assert(forwardRes.body.data.total_clientes_notificar >= 1, 'Cálculo de clientes a notificar');
+
+    // -------------------------------------------------------------
+    // PRUEBA 13: Emisión de Imagen QR en Backend
+    // -------------------------------------------------------------
+    console.log('\n▶ Prueba 13: Generación de Imagen QR Oficial (DataURL)');
+    const qrRes = await request('GET', `/api/v1/lotes-pt/${codigoPrueba}/qr`, null, operarioToken);
+    assert(qrRes.status === 200, 'Status HTTP 200 en generación de QR');
+    assert(qrRes.body.data.qr_image_data_url.startsWith('data:image/png;base64,'), 'QR DataURL generado correctamente');
+
+    // -------------------------------------------------------------
+    // PRUEBA 14: Alias de Rutas de Trazabilidad (KIT AVZ-03)
+    // -------------------------------------------------------------
+    console.log('\n▶ Prueba 14: Validación de Rutas Alias de Trazabilidad');
+    const backwardAliasRes = await request('GET', `/api/v1/trazabilidad/lote-pt/${codigoPrueba}/backward`, null, operarioToken);
+    assert(backwardAliasRes.status === 200, 'Status HTTP 200 en alias /trazabilidad/lote-pt/:codigo/backward');
+
+    const forwardAliasRes = await request('GET', '/api/v1/trazabilidad/lote-mp/LMP-20260901-01/forward', null, operarioToken);
+    assert(forwardAliasRes.status === 200, 'Status HTTP 200 en alias /trazabilidad/lote-mp/:codigo/forward');
+
+    // -------------------------------------------------------------
+    // PRUEBA 15: Protocolo de Recall y Bloqueo Preventivo Masivo
+    // -------------------------------------------------------------
+    console.log('\n▶ Prueba 15: Bloqueo Preventivo Masivo ante Protocolo de Recall (ACID)');
+    const recallBlockRes = await request('POST', '/api/v1/trazabilidad/recall/bloqueo-preventivo', {
+      codigo_lote_mp: 'LMP-20260901-01',
+      motivo: 'Alerta sanitaria microbiológica en leche cruda - Aplicación de cuarentena inmediata',
+    }, adminToken);
+    assert(recallBlockRes.status === 200, `Status HTTP 200 en Bloqueo Preventivo (Obtenido: ${recallBlockRes.status})`);
+    assert(recallBlockRes.body.data.total_lotes_bloqueados >= 0, 'Bloqueo preventivo ejecutado y registrado en auditoría');
 
     console.log('\n=============================================================');
     console.log(`  RESUMEN FINAL DE PRUEBAS: ${passedTests} / ${totalTests} EXITOSAS`);
     console.log('=============================================================\n');
 
+    if (serverInstance) {
+      serverInstance.close();
+    }
+    await db.pool.end();
+
     if (passedTests === totalTests) {
-      console.log('🎉 TODOS LOS ENTREGABLES DE LA SEMANA 4 ESTÁN OPERATIVOS Y VALIDADOS.\n');
+      console.log('🎉 TODOS LOS ENTREGABLES DE SEMANA 6 Y SEMANA 7 ESTÁN OPERATIVOS Y VALIDADOS.\n');
       process.exit(0);
     } else {
       console.error('⚠️ ALGUNAS PRUEBAS FALLARON. REVISAR LOGS ANTERIORES.\n');
@@ -223,6 +275,8 @@ async function runTests() {
     }
   } catch (error) {
     console.error('❌ Error fatal al ejecutar suite de pruebas:', error.message);
+    if (serverInstance) serverInstance.close();
+    await db.pool.end();
     process.exit(1);
   }
 }

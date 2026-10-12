@@ -66,7 +66,9 @@ class LotePTModel {
         lpt.codigo_qr_payload,
         lpt.created_at,
         op.numero_op,
+        op.linea_produccion,
         pt.nombre AS producto_nombre,
+        pt.id AS producto_id,
         pt.codigo_sku,
         pt.unidad_medida,
         pt.temperatura_conservacion
@@ -77,15 +79,63 @@ class LotePTModel {
     `;
     const values = [];
 
-    if (filtros.estado) {
+    // Filtro simple por estado único (compatibilidad con código anterior)
+    if (filtros.estado && !filtros.estados) {
       values.push(filtros.estado);
       queryText += ` AND lpt.estado = ?`;
     }
 
+    // Filtro avanzado: múltiples estados (array o string CSV)
+    if (filtros.estados) {
+      const estadosArr = Array.isArray(filtros.estados)
+        ? filtros.estados
+        : filtros.estados.split(',').map((s) => s.trim()).filter(Boolean);
+      if (estadosArr.length > 0) {
+        queryText += ` AND lpt.estado IN (?)`;
+        values.push(estadosArr);
+      }
+    }
+
+    // Filtro por búsqueda de texto (código de lote o nombre de producto)
     if (filtros.busqueda) {
       values.push(`%${filtros.busqueda}%`);
       values.push(`%${filtros.busqueda}%`);
       queryText += ` AND (lpt.codigo_lote_pt LIKE ? OR pt.nombre LIKE ?)`;
+    }
+
+    // Filtro por rango de fechas de elaboración
+    if (filtros.desde) {
+      values.push(filtros.desde);
+      queryText += ` AND lpt.fecha_elaboracion >= ?`;
+    }
+    if (filtros.hasta) {
+      values.push(filtros.hasta);
+      queryText += ` AND lpt.fecha_elaboracion <= ?`;
+    }
+
+    // Filtro por producto/SKU
+    if (filtros.producto_id) {
+      values.push(Number(filtros.producto_id));
+      queryText += ` AND pt.id = ?`;
+    }
+
+    // Filtro por línea de producción
+    if (filtros.linea_produccion) {
+      values.push(filtros.linea_produccion);
+      queryText += ` AND op.linea_produccion = ?`;
+    }
+
+    // Filtro por lote de materia prima (trazabilidad inversa)
+    if (filtros.lote_mp) {
+      values.push(`%${filtros.lote_mp}%`);
+      queryText += `
+        AND lpt.orden_produccion_id IN (
+          SELECT cmp.orden_produccion_id
+          FROM consumos_materia_prima cmp
+          JOIN lotes_materia_prima lmp ON cmp.lote_mp_id = lmp.id
+          WHERE lmp.codigo_lote_mp LIKE ?
+        )
+      `;
     }
 
     queryText += ` ORDER BY lpt.created_at DESC;`;

@@ -1,9 +1,20 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
+// Obtener la URL base adecuada según el origen de conexión (localhost o IP de red móvil)
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location) {
+    const { hostname } = window.location;
+    // Si se accede desde celular / tablet u otra PC en la LAN
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      // Aprovechar el proxy de Vite en el mismo puerto abierto (5173)
+      return '/api/v1';
+    }
+  }
+  return import.meta.env.VITE_API_URL || '/api/v1';
+};
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },

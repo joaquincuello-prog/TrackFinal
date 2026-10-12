@@ -13,6 +13,7 @@ const lotesPTRoutes = require('./routes/lotesPT.routes');
 const produccionRoutes = require('./routes/produccion.routes');
 const trazabilidadRoutes = require('./routes/trazabilidad.routes');
 const despachosRoutes = require('./routes/despachos.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use('/api/v1/lotes-pt', lotesPTRoutes);
 app.use('/api/v1/produccion', produccionRoutes);
 app.use('/api/v1/trazabilidad', trazabilidadRoutes);
 app.use('/api/v1/despachos', despachosRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 // 7. Manejador para rutas inexistentes (404)
 app.use((req, res) => {
